@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:b6b81347957e0c57a156c684bcd7b136186cae5a8691049df13c6b05a4645c93"
+  digest = "1:4ff0fe9829a8c48a05c1ca4da7969d7111bc293a24081bdc5d21a7567c61054b"
   name = "github.com/envoyproxy/go-control-plane"
   packages = [
     "envoy/api/v2",
@@ -12,7 +12,14 @@
     "envoy/api/v2/endpoint",
     "envoy/api/v2/listener",
     "envoy/api/v2/route",
+    "envoy/config/filter/accesslog/v2",
+    "envoy/config/filter/network/http_connection_manager/v2",
+    "envoy/service/discovery/v2",
     "envoy/type",
+    "pkg/cache",
+    "pkg/log",
+    "pkg/server",
+    "pkg/util",
   ]
   pruneopts = "UT"
   revision = "c7e2a120463a2209c6a0871d778f4eab96457e6b"
@@ -38,10 +45,11 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:c23ef5b1fa68d209f3a299f58f3de6ecf126c1724a8c2d28e7930c291eb32dd5"
+  digest = "1:95e1006e41c641abd2f365dfa0f1213c04da294e7cd5f0bf983af234b775db64"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
+    "jsonpb",
     "proto",
     "protoc-gen-gogo/descriptor",
     "sortkeys",
@@ -168,6 +176,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/envoyproxy/go-control-plane/envoy/api/v2",
+    "github.com/envoyproxy/go-control-plane/envoy/api/v2/core",
+    "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v2",
+    "github.com/envoyproxy/go-control-plane/pkg/cache",
+    "github.com/envoyproxy/go-control-plane/pkg/server",
     "google.golang.org/grpc",
   ]
   solver-name = "gps-cdcl"
