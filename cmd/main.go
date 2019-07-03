@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/atrifan/envoy-plane/api/handler"
+	"github.com/atrifan/envoy-plane/pkg/api/handler"
 	"google.golang.org/grpc"
 	"net"
 	api "github.com/envoyproxy/go-control-plane/envoy/api/v2"
