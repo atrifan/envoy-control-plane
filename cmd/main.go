@@ -192,8 +192,12 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 	log.WithFields(log.Fields{"port": port}).Info("gateway listening HTTP/1.1")
 	server := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: &xds.HTTPGateway{Server: srv}}
 	go func() {
-		if err := server.ListenAndServe(); err != nil {
-			log.Error(err)
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			// NOTE: there is a chance that next line won't have time to run,
+			// as main() doesn't wait for this goroutine to stop. don't use
+			// code with race conditions like these for production. see post
+			// comments below on more discussion on how to handle this.
+			log.Fatalf("ListenAndServe(): %s", err)
 		}
 	}()
 	if err := server.Shutdown(ctx); err != nil {
@@ -264,7 +268,7 @@ func main() {
 			&v2.Cluster{
 				Name:            clusterName,
 				ConnectTimeout:  2 * time.Second,
-				Type: v2.Cluster_LOGICAL_DNS,
+				ClusterDiscoveryType: &v2.Cluster_Type{v2.Cluster_LOGICAL_DNS},
 				DnsLookupFamily: v2.Cluster_V4_ONLY,
 				LbPolicy:        v2.Cluster_ROUND_ROBIN,
 				Hosts:           []*core.Address{h},
@@ -341,7 +345,7 @@ func main() {
 				FilterChains: []listener.FilterChain{{
 					Filters: []listener.Filter{{
 						Name:   util.HTTPConnectionManager,
-						ConfigType: pbst,
+						ConfigType: &listener.Filter_Config{pbst},
 					}},
 				}},
 			}}
