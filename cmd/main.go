@@ -281,7 +281,7 @@ func main() {
 		// =================================================================================
 		var listenerName = "listener_0"
 		var targetHost = "www.bbc.com"
-		var targetRegex = "/*"
+		var targetRegex = "/api"
 		var virtualHostName = "local_service"
 		var routeConfigName = "local_route"
 
@@ -293,8 +293,8 @@ func main() {
 
 			Routes: []route.Route{{
 				Match: route.RouteMatch{
-					PathSpecifier: &route.RouteMatch_Regex{
-						Regex: targetRegex,
+					PathSpecifier: &route.RouteMatch_Prefix{
+						Prefix: targetRegex,
 					},
 				},
 				Action: &route.Route_Route{
@@ -337,7 +337,7 @@ func main() {
 							Protocol: core.TCP,
 							Address:  localhost,
 							PortSpecifier: &core.SocketAddress_PortValue{
-								PortValue: 10000,
+								PortValue: 9191,
 							},
 						},
 					},
