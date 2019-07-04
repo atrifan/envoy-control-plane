@@ -245,7 +245,7 @@ func main() {
 
 	for {
 		atomic.AddInt32(&version, 1)
-		nodeId := config.GetStatusKeys()[1]
+		nodeId := config.GetStatusKeys()[0]
 
 		var clusterName = "service_bbc"
 		var remoteHost = "www.bbc.com"
