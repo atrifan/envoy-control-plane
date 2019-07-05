@@ -235,6 +235,11 @@ func InitXds(ctx context.Context) {
 	als.Dump(func(s string) { log.Debug(s) })
 	cb.Report()
 
+	_cacheInit()
+
+}
+
+func _cacheInit() {
 	for {
 		atomic.AddInt32(&version, 1)
 		nodeId := config.GetStatusKeys()[0]
@@ -353,6 +358,5 @@ func InitXds(ctx context.Context) {
 		_, _ = reader.ReadString('\n')
 
 	}
-
 }
 
