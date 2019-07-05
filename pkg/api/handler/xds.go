@@ -11,18 +11,17 @@ import (
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/listener"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/route"
+	hcm "github.com/envoyproxy/go-control-plane/envoy/config/filter/network/http_connection_manager/v2"
 	accesslog "github.com/envoyproxy/go-control-plane/envoy/service/accesslog/v2"
 	discovery "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v2"
 	"github.com/envoyproxy/go-control-plane/pkg/cache"
 	xds "github.com/envoyproxy/go-control-plane/pkg/server"
 	"github.com/envoyproxy/go-control-plane/pkg/util"
 	log "github.com/sirupsen/logrus"
-	hcm "github.com/envoyproxy/go-control-plane/envoy/config/filter/network/http_connection_manager/v2"
 	"google.golang.org/grpc"
 	"net"
 	"net/http"
 	"os"
-	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -58,75 +57,6 @@ func init() {
 	flag.UintVar(&gatewayPort, "gateway", 18001, "Management server port for HTTP gateway")
 	flag.UintVar(&alsPort, "als", 18090, "Accesslog server port")
 	flag.StringVar(&mode, "ads", Ads, "Management server type (ads, xds, rest)")
-}
-
-type logger struct{}
-
-func (logger logger) Infof(format string, args ...interface{}) {
-	log.Infof(format, args...)
-}
-func (logger logger) Errorf(format string, args ...interface{}) {
-	log.Errorf(format, args...)
-}
-func (cb *callbacks) Report() {
-	cb.mu.Lock()
-	defer cb.mu.Unlock()
-	log.WithFields(log.Fields{"fetches": cb.fetches, "requests": cb.requests}).Info("cb.Report()  callbacks")
-}
-func (cb *callbacks) OnStreamOpen(ctx context.Context, id int64, typ string) error {
-	log.Infof("OnStreamOpen %d open for %s", id, typ)
-	return nil
-}
-
-func (cb *callbacks) OnStreamClosed(id int64) {
-	log.Infof("OnStreamClosed %d closed", id)
-}
-func (cb *callbacks) OnStreamRequest(int64, *v2.DiscoveryRequest) error {
-	log.Infof("OnStreamRequest")
-	cb.mu.Lock()
-	defer cb.mu.Unlock()
-	cb.requests++
-	if cb.signal != nil {
-		close(cb.signal)
-		cb.signal = nil
-	}
-
-	return nil
-}
-func (cb *callbacks) OnStreamResponse(int64, *v2.DiscoveryRequest, *v2.DiscoveryResponse) {
-	log.Infof("OnStreamResponse...")
-	cb.Report()
-}
-func (cb *callbacks) OnFetchRequest(ctx context.Context, req *v2.DiscoveryRequest) error {
-	log.Infof("OnFetchRequest...")
-	cb.mu.Lock()
-	defer cb.mu.Unlock()
-	cb.fetches++
-	if cb.signal != nil {
-		close(cb.signal)
-		cb.signal = nil
-	}
-	return nil
-}
-func (cb *callbacks) OnFetchResponse(*v2.DiscoveryRequest, *v2.DiscoveryResponse) {}
-
-type callbacks struct {
-	signal   chan struct{}
-	fetches  int
-	requests int
-	mu       sync.Mutex
-}
-
-// Hasher returns node ID as an ID
-type Hasher struct {
-}
-
-// ID function
-func (h Hasher) ID(node *core.Node) string {
-	if node == nil {
-		return "unknown"
-	}
-	return node.Id
 }
 
 // RunAccessLogServer starts an accesslog service.
@@ -207,12 +137,12 @@ func InitXds(ctx context.Context) {
 	}
 
 	signal := make(chan struct{})
-	cb := &callbacks{
+	cb := &Callbacks{
 		signal:   signal,
 		fetches:  0,
 		requests: 0,
 	}
-	config = cache.NewSnapshotCache(mode == Ads, Hasher{}, logger{})
+	config = cache.NewSnapshotCache(mode == Ads, Hasher{}, Logger{})
 
 	srv := xds.NewServer(config, cb)
 
