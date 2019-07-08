@@ -24,10 +24,10 @@
 #   go-tests = true
 #   unused-packages = true
 
+required = ["github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway", "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger", "github.com/golang/protobuf/protoc-gen-go"]
 
 [prune]
   go-tests = true
-  unused-packages = true
 
 [[constraint]]
   branch = "master"
@@ -40,3 +40,8 @@
 [[constraint]]
   name = "github.com/sirupsen/logrus"
   version = "1.4.2"
+
+[[constraint]]
+  name = "github.com/grpc-ecosystem/grpc-gateway"
+  version = "1.9.3"
+

@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/atrifan/envoy-plane/pkg/api/handler"
+	"github.com/atrifan/envoy-plane/pkg/cmd"
 )
 
 
 
 func main() {
 	ctx := context.Background()
-	handler.InitXds(ctx)
+	cmd.InitXds(ctx)
 }
 

@@ -1,4 +1,4 @@
-package handler
+package cmd
 
 import (
 	"bufio"
@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	myals "github.com/atrifan/envoy-plane/pkg/api/acesslogs"
+	xdshandler "github.com/atrifan/envoy-plane/pkg/api/handler/xds"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/auth"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
@@ -35,6 +36,8 @@ var (
 	port        uint
 	gatewayPort uint
 	alsPort     uint
+	httpRestPort    uint
+	grpcRestPort	uint
 
 	mode string
 
@@ -55,6 +58,8 @@ func init() {
 	flag.BoolVar(&onlyLogging, "onlyLogging", false, "Only demo AccessLogging Service")
 	flag.UintVar(&port, "port", 18000, "Management server port")
 	flag.UintVar(&gatewayPort, "gateway", 18001, "Management server port for HTTP gateway")
+	flag.UintVar(&httpRestPort, "rest-port", 8082, "HTTP rest port to bind")
+	flag.UintVar(&grpcRestPort, "grpc-rest-port", 8081, "gRPC rest port to bind")
 	flag.UintVar(&alsPort, "als", 18090, "Accesslog server port")
 	flag.StringVar(&mode, "ads", Ads, "Management server type (ads, xds, rest)")
 }
@@ -116,18 +121,26 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 	log.WithFields(log.Fields{"port": port}).Info("gateway listening HTTP/1.1")
 	server := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: &xds.HTTPGateway{Server: srv}}
 	go func() {
-		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil {
 			// NOTE: there is a chance that next line won't have time to run,
 			// as main() doesn't wait for this goroutine to stop. don't use
 			// code with race conditions like these for production. see post
 			// comments below on more discussion on how to handle this.
 			log.Fatalf("ListenAndServe(): %s", err)
 		}
+		print("here")
 	}()
+	<- ctx.Done()
 	if err := server.Shutdown(ctx); err != nil {
 		log.Error(err)
 	}
 }
+
+// RunManagementGateway starts an HTTP gateway to an xDS server.
+func RunRestServices(ctx context.Context, grpcPort uint, restPort uint) {
+	RunServer(ctx, grpcPort, restPort)
+}
+
 
 
 func InitXds(ctx context.Context) {
@@ -137,12 +150,12 @@ func InitXds(ctx context.Context) {
 	}
 
 	signal := make(chan struct{})
-	cb := &Callbacks{
-		signal:   signal,
-		fetches:  0,
-		requests: 0,
+	cb := &xdshandler.Callbacks{
+		Signal:   signal,
+		Fetches:  0,
+		Requests: 0,
 	}
-	config = cache.NewSnapshotCache(mode == Ads, Hasher{}, Logger{})
+	config = cache.NewSnapshotCache(mode == Ads, xdshandler.Hasher{}, xdshandler.Logger{})
 
 	srv := xds.NewServer(config, cb)
 
@@ -159,6 +172,9 @@ func InitXds(ctx context.Context) {
 	// start the xDS server
 	go RunManagementServer(ctx, srv, port)
 	go RunManagementGateway(ctx, srv, gatewayPort)
+
+	//start rest server
+	go RunRestServices(ctx, grpcRestPort, httpRestPort)
 
 	<-signal
 
