@@ -5,8 +5,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	grpc2 "github.com/atrifan/envoy-plane/cmd/grpc"
-	"github.com/atrifan/envoy-plane/cmd/rest"
+	v1Handler "github.com/atrifan/envoy-plane/pkg/api/handler/rest/v1"
 	xdshandler "github.com/atrifan/envoy-plane/pkg/api/handler/xds"
 	v1 "github.com/atrifan/envoy-plane/pkg/api/service/v1"
 	myals "github.com/atrifan/envoy-plane/pkg/api/util/acesslogs"
@@ -21,6 +20,7 @@ import (
 	"github.com/envoyproxy/go-control-plane/pkg/cache"
 	xds "github.com/envoyproxy/go-control-plane/pkg/server"
 	"github.com/envoyproxy/go-control-plane/pkg/util"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"net"
@@ -121,8 +121,8 @@ func RunManagementServer(ctx context.Context, server xds.Server, port uint) {
 
 // RunManagementGateway starts an HTTP gateway to an xDS server.
 func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
-	log.WithFields(log.Fields{"port": port}).Info("gateway listening HTTP/1.1")
 	server := &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: &xds.HTTPGateway{Server: srv}}
+	log.WithFields(log.Fields{"port": port}).Info("gateway listening HTTP/1.1")
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			// NOTE: there is a chance that next line won't have time to run,
@@ -131,7 +131,6 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 			// comments below on more discussion on how to handle this.
 			log.Fatalf("ListenAndServe(): %s", err)
 		}
-		print("here")
 	}()
 	<- ctx.Done()
 	if err := server.Shutdown(ctx); err != nil {
@@ -139,23 +138,59 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 	}
 }
 
-// RunManagementGateway starts an HTTP gateway to an xDS server.
-func RunRestServices(ctx context.Context, grpcPort uint, httpPort uint) {
-	v1API := v1.NewToDoServiceServer()
+func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ToDoServiceServer) {
+	server := grpc.NewServer()
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%d",grpcPort))
+	if err != nil {
+		log.Fatalf("Error grpc listenting %s", err)
+		return
+	}
 
-	// run HTTP gateway
-	go func() {
-		_ = grpc2.RunServer(ctx, v1API, grpcPort)
-	}()
+	// register service
+	v1Handler.RegisterToDoServiceServer(server, v1API)
+	log.WithFields(log.Fields{"port": grpcPort}).Info("started grpc rest server")
 
+	// graceful shutdown
 	go func() {
-		_ = rest.RunServer(ctx, grpcPort, httpPort)
+		if err := server.Serve(listen); err != nil {
+			log.Fatalf("Grpc rest server failed: %s", err)
+		}
 	}()
 
 	<- ctx.Done()
+
+	server.GracefulStop()
+	log.Println("stoped gRPC server...")
 }
 
+func RunRestServicesHttp(ctx context.Context, grpcPort uint, httpPort uint) {
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	if err := v1Handler.RegisterToDoServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf("localhost:%d",grpcPort), opts); err != nil {
+		log.Fatalf("failed to start HTTP gateway: %v", err)
+		return
+	}
 
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", httpPort),
+		Handler: mux,
+	}
+
+	log.WithFields(log.Fields{"port": httpPort}).Info("started http rest server")
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatalf("failed to start HTTP gateway ListenAndServe(): %s", err)
+		}
+	}()
+
+	<- ctx.Done()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatalf("Failed to shutdown rest http: %s", err)
+	}
+	log.Fatalf("Close http rest server")
+}
 
 func InitXds(ctx context.Context) {
 	flag.Parse()
@@ -188,7 +223,9 @@ func InitXds(ctx context.Context) {
 	go RunManagementGateway(ctx, srv, gatewayPort)
 
 	//start rest server
-	go RunRestServices(ctx, grpcRestPort, httpRestPort)
+	v1API := v1.NewToDoServiceServer()
+	go RunRestServicesGrpc(ctx, grpcRestPort, v1API)
+	go RunRestServicesHttp(ctx, grpcRestPort, httpRestPort)
 
 	<-signal
 

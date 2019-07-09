@@ -2,19 +2,6 @@
 
 
 [[projects]]
-  branch = "part2"
-  digest = "1:8e397429a7690529764d981a8798d2b1a6ac43d3251a50b8f66db4d92898c824"
-  name = "github.com/amsokol/go-grpc-http-rest-microservice-tutorial"
-  packages = [
-    "pkg/api/v1",
-    "pkg/protocol/grpc",
-    "pkg/protocol/rest",
-    "pkg/service/v1",
-  ]
-  pruneopts = "T"
-  revision = "0df7c0c06d000bdbf36f944162b8ba40a54f1132"
-
-[[projects]]
   digest = "1:aa14528fd680301a664cff13bdc08f64a25b3940c29cb9a5064c6a4e437ff67d"
   name = "github.com/envoyproxy/go-control-plane"
   packages = [
@@ -55,14 +42,6 @@
   pruneopts = "T"
   revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
   version = "v1.0.0"
-
-[[projects]]
-  digest = "1:92d9d8d25bbab74ef8a3c546c121e24542ac984ccdc4f99678e06042a45e71f8"
-  name = "github.com/go-sql-driver/mysql"
-  packages = ["."]
-  pruneopts = "T"
-  revision = "72cd26f257d44c1114970e19afddcd812016007e"
-  version = "v1.4.1"
 
 [[projects]]
   digest = "1:8b49904d2ff610bb1c7414c7f976ed46450c053633274fafb61a66589da056a2"
@@ -164,7 +143,6 @@
   digest = "1:963d2ac08e898c80cd173c1ade07cce2c6046a62f51decf5fd78faa8ccd6271d"
   name = "golang.org/x/net"
   packages = [
-    "context",
     "http/httpguts",
     "http2",
     "http2/hpack",
@@ -207,14 +185,6 @@
   pruneopts = "T"
   revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
   version = "v0.3.2"
-
-[[projects]]
-  digest = "1:04b9a99f5ff102323281698000a18c2daabde66baea55fe74941d6c82ed715a8"
-  name = "google.golang.org/appengine"
-  packages = ["cloudsql"]
-  pruneopts = "T"
-  revision = "b2f4a3cf3c67576a2ee09e1fe62656a5086ce880"
-  version = "v1.6.1"
 
 [[projects]]
   branch = "master"
@@ -282,9 +252,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/amsokol/go-grpc-http-rest-microservice-tutorial/pkg/protocol/grpc",
-    "github.com/amsokol/go-grpc-http-rest-microservice-tutorial/pkg/protocol/rest",
-    "github.com/amsokol/go-grpc-http-rest-microservice-tutorial/pkg/service/v1",
     "github.com/envoyproxy/go-control-plane/envoy/api/v2",
     "github.com/envoyproxy/go-control-plane/envoy/api/v2/auth",
     "github.com/envoyproxy/go-control-plane/envoy/api/v2/core",
@@ -297,7 +264,6 @@
     "github.com/envoyproxy/go-control-plane/pkg/cache",
     "github.com/envoyproxy/go-control-plane/pkg/server",
     "github.com/envoyproxy/go-control-plane/pkg/util",
-    "github.com/go-sql-driver/mysql",
     "github.com/golang/protobuf/proto",
     "github.com/golang/protobuf/protoc-gen-go",
     "github.com/golang/protobuf/ptypes/timestamp",
