@@ -2,7 +2,7 @@ package v1
 
 import (
 	"context"
-	v1 "github.com/atrifan/envoy-plane/pkg/api/rest/v1"
+	v1 "github.com/atrifan/envoy-plane/pkg/api/handler/rest/v1"
 )
 
 const (

@@ -1,12 +1,15 @@
-package cmd
+package xds
 
 import (
 	"bufio"
 	"context"
 	"flag"
 	"fmt"
-	myals "github.com/atrifan/envoy-plane/pkg/api/acesslogs"
+	grpc2 "github.com/atrifan/envoy-plane/cmd/grpc"
+	"github.com/atrifan/envoy-plane/cmd/rest"
 	xdshandler "github.com/atrifan/envoy-plane/pkg/api/handler/xds"
+	v1 "github.com/atrifan/envoy-plane/pkg/api/service/v1"
+	myals "github.com/atrifan/envoy-plane/pkg/api/util/acesslogs"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/auth"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
@@ -137,8 +140,19 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 }
 
 // RunManagementGateway starts an HTTP gateway to an xDS server.
-func RunRestServices(ctx context.Context, grpcPort uint, restPort uint) {
-	RunServer(ctx, grpcPort, restPort)
+func RunRestServices(ctx context.Context, grpcPort uint, httpPort uint) {
+	v1API := v1.NewToDoServiceServer()
+
+	// run HTTP gateway
+	go func() {
+		_ = grpc2.RunServer(ctx, v1API, grpcPort)
+	}()
+
+	go func() {
+		_ = rest.RunServer(ctx, grpcPort, httpPort)
+	}()
+
+	<- ctx.Done()
 }
 
 

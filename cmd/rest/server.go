@@ -3,7 +3,7 @@ package rest
 import (
 	"context"
 	"fmt"
-	v1 "github.com/atrifan/envoy-plane/pkg/api/rest/v1"
+	v1 "github.com/atrifan/envoy-plane/pkg/api/handler/rest/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"

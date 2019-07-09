@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"github.com/atrifan/envoy-plane/pkg/cmd"
+	"github.com/atrifan/envoy-plane/cmd/xds"
 )
 
 
 
 func main() {
 	ctx := context.Background()
-	cmd.InitXds(ctx)
+	xds.InitXds(ctx)
 }
 
