@@ -1,12 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "ToDo service",
+    "title": "Cluster service",
     "version": "1.0",
     "contact": {
-      "name": "go-grpc-http-rest-microservice-tutorial project",
-      "url": "https://github.com/amsokol/go-grpc-http-rest-microservice-tutorial",
-      "email": "medium@amsokol.com"
+      "name": "Cluster service",
+      "email": "trifan@adobe.com"
     }
   },
   "schemes": [
@@ -19,9 +18,9 @@
     "application/json"
   ],
   "paths": {
-    "/v1/todo": {
+    "/v1/clusters": {
       "post": {
-        "summary": "Create new todo task",
+        "summary": "Create new clusters",
         "operationId": "Create",
         "responses": {
           "200": {
@@ -48,123 +47,11 @@
           }
         ],
         "tags": [
-          "ToDoService"
-        ]
-      }
-    },
-    "/v1/todo/all": {
-      "get": {
-        "summary": "Read all todo tasks",
-        "operationId": "ReadAll",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ReadAllResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "api",
-            "description": "API versioning: it is my best practice to specify version explicitly.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ToDoService"
-        ]
-      }
-    },
-    "/v1/todo/{id}": {
-      "get": {
-        "summary": "Read todo task",
-        "operationId": "Read",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ReadResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "Unique integer identifier of the todo task",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "api",
-            "description": "API versioning: it is my best practice to specify version explicitly.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ToDoService"
+          "ClusterService"
         ]
       },
-      "delete": {
-        "summary": "Delete todo task",
-        "operationId": "Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "Unique integer identifier of the todo task to delete",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "api",
-            "description": "API versioning: it is my best practice to specify version explicitly.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ToDoService"
-        ]
-      }
-    },
-    "/v1/todo/{toDo.id}": {
       "put": {
-        "summary": "Update todo task",
+        "summary": "Update cluster on node",
         "operationId": "Update",
         "responses": {
           "200": {
@@ -182,14 +69,6 @@
         },
         "parameters": [
           {
-            "name": "toDo.id",
-            "description": "Unique integer identifier of the todo task",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -199,11 +78,11 @@
           }
         ],
         "tags": [
-          "ToDoService"
+          "ClusterService"
         ]
       },
       "patch": {
-        "summary": "Update todo task",
+        "summary": "Update cluster on node",
         "operationId": "Update2",
         "responses": {
           "200": {
@@ -221,14 +100,6 @@
         },
         "parameters": [
           {
-            "name": "toDo.id",
-            "description": "Unique integer identifier of the todo task",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -238,135 +109,262 @@
           }
         ],
         "tags": [
-          "ToDoService"
+          "ClusterService"
+        ]
+      }
+    },
+    "/v1/clusters/{nodeId}": {
+      "get": {
+        "summary": "Read all clusters for a node",
+        "operationId": "ReadAllClustersForNode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReadAllResponseForNode"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nodeId",
+            "description": "API versioning: it is my best practice to specify version explicitly",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ClusterService"
+        ]
+      }
+    },
+    "/v1/clusters/{nodeId}/version/{versionId}": {
+      "delete": {
+        "summary": "Delete cluster from node",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nodeId",
+            "description": "node id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "versionId",
+            "description": "version of cluster to delete",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ClusterService"
+        ]
+      }
+    },
+    "/v1/clusters/{nodeId}/version/{version}": {
+      "get": {
+        "summary": "Read cluster from node",
+        "operationId": "Read",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReadResponse"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nodeId",
+            "description": "The nodeId where you want to get the cluster from",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "description": "The version of the cluster that you want to retrieve",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ClusterService"
         ]
       }
     }
   },
   "definitions": {
+    "v1Cluster": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "title": "Unique clusterName"
+        },
+        "LbPolicy": {
+          "type": "string",
+          "title": "Type of lb policy"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Hosts"
+          },
+          "title": "list of hosts"
+        },
+        "version": {
+          "type": "string",
+          "title": "unique cluster version"
+        }
+      },
+      "title": "Cluster message\nlast id 4"
+    },
     "v1CreateRequest": {
       "type": "object",
       "properties": {
-        "api": {
+        "nodeId": {
           "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
+          "title": "for which node to create the cluster"
         },
-        "toDo": {
-          "$ref": "#/definitions/v1ToDo",
-          "title": "Task entity to add"
+        "cluster": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Cluster"
+          },
+          "title": "List of clusters"
         }
       },
-      "title": "Request data to create new todo task"
+      "title": "Request data to create new Cluster"
     },
     "v1CreateResponse": {
       "type": "object",
       "properties": {
-        "api": {
+        "nodeId": {
           "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
+          "title": "The node where the cluster has been created"
         },
-        "id": {
-          "type": "string",
-          "format": "int64",
-          "title": "ID of created task"
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "versions of the created clusters"
         }
       },
-      "title": "Contains data of created todo task"
+      "title": "Contains data of created Cluster\nlast id 2"
     },
     "v1DeleteResponse": {
       "type": "object",
       "properties": {
-        "api": {
+        "nodeId": {
           "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
+          "title": "nodeId response"
         },
         "deleted": {
-          "type": "string",
-          "format": "int64",
-          "title": "Contains number of entities have beed deleted\nEquals 1 in case of succesfull delete"
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "contains the versions of deleted clusters"
         }
       },
       "title": "Contains status of delete operation"
     },
-    "v1ReadAllResponse": {
+    "v1Hosts": {
       "type": "object",
       "properties": {
-        "api": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Hosts message\nlast id = 2"
+    },
+    "v1ReadAllResponseForNode": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
           "type": "string",
           "title": "API versioning: it is my best practice to specify version explicitly"
         },
-        "toDos": {
+        "clusters": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1ToDo"
+            "$ref": "#/definitions/v1Cluster"
           },
           "title": "List of all todo tasks"
         }
       },
-      "title": "Contains list of all todo tasks"
+      "title": "Contains list of all clusters on a node"
     },
     "v1ReadResponse": {
       "type": "object",
       "properties": {
-        "api": {
-          "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
+        "nodeId": {
+          "type": "string"
         },
-        "toDo": {
-          "$ref": "#/definitions/v1ToDo",
-          "title": "Task entity read by ID"
+        "cluster": {
+          "$ref": "#/definitions/v1Cluster"
         }
-      },
-      "title": "Contains todo task data specified in by ID request"
-    },
-    "v1ToDo": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64",
-          "title": "Unique integer identifier of the todo task"
-        },
-        "title": {
-          "type": "string",
-          "title": "Title of the task"
-        },
-        "description": {
-          "type": "string",
-          "title": "Detail description of the todo task"
-        },
-        "reminder": {
-          "type": "string",
-          "format": "date-time",
-          "title": "Date and time to remind the todo task"
-        }
-      },
-      "title": "Task we have to do"
+      }
     },
     "v1UpdateRequest": {
       "type": "object",
       "properties": {
-        "api": {
+        "nodeId": {
           "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
+          "title": "node for which we create a cluster"
         },
-        "toDo": {
-          "$ref": "#/definitions/v1ToDo",
-          "title": "Task entity to update"
+        "cluster": {
+          "$ref": "#/definitions/v1Cluster",
+          "title": "Cluster object to update"
         }
       },
-      "title": "Request data to update todo task"
+      "title": "Request data to update a cluster"
     },
     "v1UpdateResponse": {
       "type": "object",
       "properties": {
-        "api": {
+        "nodeId": {
           "type": "string",
           "title": "API versioning: it is my best practice to specify version explicitly"
         },
-        "updated": {
+        "version": {
           "type": "string",
-          "format": "int64",
           "title": "Contains number of entities have beed updated\nEquals 1 in case of succesfull update"
         }
       },

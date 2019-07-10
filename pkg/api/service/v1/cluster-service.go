@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	v1 "github.com/atrifan/envoy-plane/pkg/api/handler/rest/v1"
+	"github.com/envoyproxy/go-control-plane/pkg/cache"
 )
 
 const (
@@ -11,29 +12,33 @@ const (
 )
 
 // toDoServiceServer is implementation of v1.ToDoServiceServer proto interface
-type toDoServiceServer struct {}
+type clusterServiceServer struct {
+	cache *cache.SnapshotCache
+}
 
-func (v1 *toDoServiceServer) ReadAll(context.Context, *v1.ReadAllRequest) (*v1.ReadAllResponse, error) {
+func (v1 *clusterServiceServer) ReadAllClustersForNode(context.Context, *v1.ReadAllRequestForNode) (*v1.ReadAllResponseForNode, error) {
 	panic("implement me")
 }
 
-func (v1 *toDoServiceServer) Create(context.Context, *v1.CreateRequest) (*v1.CreateResponse, error) {
+func (v1 *clusterServiceServer) Create(context.Context, *v1.CreateRequest) (*v1.CreateResponse, error) {
 	panic("implement me")
 }
 
-func (v1 *toDoServiceServer) Read(context.Context, *v1.ReadRequest) (*v1.ReadResponse, error) {
+func (v1 *clusterServiceServer) Read(context.Context, *v1.ReadRequest) (*v1.ReadResponse, error) {
 	panic("implement me")
 }
 
-func (v1 *toDoServiceServer) Update(context.Context, *v1.UpdateRequest) (*v1.UpdateResponse, error) {
+func (v1 *clusterServiceServer) Update(context.Context, *v1.UpdateRequest) (*v1.UpdateResponse, error) {
 	panic("implement me")
 }
 
-func (v1 *toDoServiceServer) Delete(context.Context, *v1.DeleteRequest) (*v1.DeleteResponse, error) {
+func (v1 *clusterServiceServer) Delete(context.Context, *v1.DeleteRequest) (*v1.DeleteResponse, error) {
 	panic("implement me")
 }
 
 // NewToDoServiceServer creates ToDo service
-func NewToDoServiceServer() v1.ToDoServiceServer {
-	return &toDoServiceServer{}
+func NewToDoServiceServer(cache *cache.SnapshotCache) v1.ClusterServiceServer {
+	return &clusterServiceServer{
+		cache: cache,
+	}
 }

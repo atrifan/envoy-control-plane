@@ -138,7 +138,7 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 	}
 }
 
-func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ToDoServiceServer) {
+func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ClusterServiceServer) {
 	server := grpc.NewServer()
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d",grpcPort))
 	if err != nil {
@@ -147,7 +147,7 @@ func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ToD
 	}
 
 	// register service
-	v1Handler.RegisterToDoServiceServer(server, v1API)
+	v1Handler.RegisterClusterServiceServer(server, v1API)
 	log.WithFields(log.Fields{"port": grpcPort}).Info("started grpc rest server")
 
 	// graceful shutdown
@@ -166,7 +166,7 @@ func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ToD
 func RunRestServicesHttp(ctx context.Context, grpcPort uint, httpPort uint) {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	if err := v1Handler.RegisterToDoServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf("localhost:%d",grpcPort), opts); err != nil {
+	if err := v1Handler.RegisterClusterServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf("localhost:%d",grpcPort), opts); err != nil {
 		log.Fatalf("failed to start HTTP gateway: %v", err)
 		return
 	}
@@ -223,7 +223,7 @@ func InitXds(ctx context.Context) {
 	go RunManagementGateway(ctx, srv, gatewayPort)
 
 	//start rest server
-	v1API := v1.NewToDoServiceServer()
+	v1API := v1.NewToDoServiceServer(&config)
 	go RunRestServicesGrpc(ctx, grpcRestPort, v1API)
 	go RunRestServicesHttp(ctx, grpcRestPort, httpRestPort)
 
@@ -348,6 +348,7 @@ func _cacheInit() {
 
 		log.Infof(">>>>>>>>>>>>>>>>>>> creating snapshot Version " + fmt.Sprint(version))
 		snap := cache.NewSnapshot(fmt.Sprint(version), nil, c, nil, l)
+
 
 		config.SetSnapshot(nodeId, snap)
 

@@ -1,18 +1,17 @@
 syntax = "proto3";
 package v1;
 
-import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 	info: {
-		title: "ToDo service";
+		title: "Cluster service";
         version: "1.0";
         contact: {
-            name: "go-grpc-http-rest-microservice-tutorial project";
-            url: "https://github.com/amsokol/go-grpc-http-rest-microservice-tutorial";
-            email: "medium@amsokol.com";
+            name: "Cluster service";
+            url: "";
+            email: "trifan@adobe.com";
         };
     };
     schemes: HTTP;
@@ -31,151 +30,155 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
     }
 };
 
-// Task we have to do
-message ToDo {
-    // Unique integer identifier of the todo task
-    int64 id = 1;
-
-    // Title of the task
-    string title = 2;
-
-    // Detail description of the todo task
-    string description = 3;
-
-    // Date and time to remind the todo task
-    google.protobuf.Timestamp reminder = 4;
+//Hosts message
+//last id = 2
+message Hosts {
+    string ip = 1;
+    uint32 port = 2;
 }
 
-// Request data to create new todo task
+// Cluster message
+// last id 4
+message Cluster {
+    // Unique clusterName
+    string clusterName = 1;
+
+    // Type of lb policy
+    string LbPolicy = 2;
+
+    // list of hosts
+    repeated Hosts hosts = 3;
+
+    // unique cluster version
+    string version = 4;
+}
+
+// Request data to create new Cluster
 message CreateRequest{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    // for which node to create the cluster
+    string nodeId = 1;
 
-    // Task entity to add
-    ToDo toDo = 2;
+    // List of clusters
+    repeated Cluster cluster = 2;
 }
 
-// Contains data of created todo task
+// Contains data of created Cluster
+// last id 2
 message CreateResponse{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    // The node where the cluster has been created
+    string nodeId = 1;
 
-    // ID of created task
-    int64 id = 2;
+    // versions of the created clusters
+    repeated string versions = 2;
 }
 
-// Request data to read todo task
-message ReadRequest{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
-
-    // Unique integer identifier of the todo task
-    int64 id = 2;
-}
-
-// Contains todo task data specified in by ID request
-message ReadResponse{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
-
-    // Task entity read by ID
-    ToDo toDo = 2;
-}
-
-// Request data to update todo task
+// Request data to update a cluster
 message UpdateRequest{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    // node for which we create a cluster
+    string nodeId = 1;
 
-    // Task entity to update
-    ToDo toDo = 2;
+    // Cluster object to update
+    Cluster cluster = 2;
 }
 
 // Contains status of update operation
 message UpdateResponse{
     // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    string nodeId = 1;
 
     // Contains number of entities have beed updated
     // Equals 1 in case of succesfull update
-    int64 updated = 2;
+    string version = 2;
 }
 
-// Request data to delete todo task
+// Request data to delete cluster from a node
 message DeleteRequest{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    // node id
+    string nodeId = 1;
 
-    // Unique integer identifier of the todo task to delete
-    int64 id = 2;
+    // version of cluster to delete
+    string versionId = 2;
 }
 
 // Contains status of delete operation
 message DeleteResponse{
-    // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    // nodeId response
+    string nodeId = 1;
 
-    // Contains number of entities have beed deleted
-    // Equals 1 in case of succesfull delete
-    int64 deleted = 2;
+    // contains the versions of deleted clusters
+    repeated string deleted = 2;
 }
 
-// Request data to read all todo task
-message ReadAllRequest{
+// Request data to read all clusters for a node
+message ReadAllRequestForNode {
     // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    string nodeId = 1;
 }
 
-// Contains list of all todo tasks
-message ReadAllResponse{
+// Contains list of all clusters on a node
+message ReadAllResponseForNode {
     // API versioning: it is my best practice to specify version explicitly
-    string api = 1;
+    string nodeId = 1;
 
     // List of all todo tasks
-    repeated ToDo toDos = 2;
+    repeated Cluster clusters = 2;
 }
 
-// Service to manage list of todo tasks
-service ToDoService {
-    // Read all todo tasks
-    rpc ReadAll(ReadAllRequest) returns (ReadAllResponse){
+// Request to get a specific cluster
+message ReadRequest {
+    // The nodeId where you want to get the cluster from
+    string nodeId = 1;
+
+    // The version of the cluster that you want to retrieve
+    string version = 2;
+}
+
+message ReadResponse {
+    string nodeId = 1;
+    Cluster cluster = 2;
+}
+
+// Service to manage list of Clusters
+service ClusterService {
+    // Read all clusters for a node
+    rpc ReadAllClustersForNode(ReadAllRequestForNode) returns (ReadAllResponseForNode){
         option (google.api.http) = {
-            get: "/v1/todo/all"
+            get: "/v1/clusters/{nodeId}"
         };
     }
 
-    // Create new todo task
+    // Create new clusters
     rpc Create(CreateRequest) returns (CreateResponse){
         option (google.api.http) = {
-            post: "/v1/todo"
+            post: "/v1/clusters"
             body: "*"
         };
     }
 
-    // Read todo task
+    // Read cluster from node
     rpc Read(ReadRequest) returns (ReadResponse){
         option (google.api.http) = {
-            get: "/v1/todo/{id}"
+            get: "/v1/clusters/{nodeId}/version/{version}"
         };
     }
 
-    // Update todo task
+    // Update cluster on node
     rpc Update(UpdateRequest) returns (UpdateResponse){
         option (google.api.http) = {
-            put: "/v1/todo/{toDo.id}"
+            put: "/v1/clusters"
             body: "*"
 
             additional_bindings {
-                patch: "/v1/todo/{toDo.id}"
+                patch: "/v1/clusters"
                 body: "*"
             }
         };
     }
 
-    // Delete todo task
+    // Delete cluster from node
     rpc Delete(DeleteRequest) returns (DeleteResponse){
         option (google.api.http) = {
-            delete: "/v1/todo/{id}"
+            delete: "/v1/clusters/{nodeId}/version/{versionId}"
         };
     }
 }
