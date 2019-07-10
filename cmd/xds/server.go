@@ -223,7 +223,7 @@ func InitXds(ctx context.Context) {
 	go RunManagementGateway(ctx, srv, gatewayPort)
 
 	//start rest server
-	v1API := v1.NewToDoServiceServer(&config)
+	v1API := v1.NewToDoServiceServer(config)
 	go RunRestServicesGrpc(ctx, grpcRestPort, v1API)
 	go RunRestServicesHttp(ctx, grpcRestPort, httpRestPort)
 
