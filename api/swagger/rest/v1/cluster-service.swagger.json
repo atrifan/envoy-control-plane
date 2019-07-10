@@ -115,13 +115,13 @@
     },
     "/v1/clusters/{nodeId}": {
       "get": {
-        "summary": "Read all clusters for a node",
-        "operationId": "ReadAllClustersForNode",
+        "summary": "Read cluster from node",
+        "operationId": "Read",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ReadAllResponseForNode"
+              "$ref": "#/definitions/v1ReadResponse"
             }
           },
           "404": {
@@ -134,18 +134,23 @@
         "parameters": [
           {
             "name": "nodeId",
-            "description": "API versioning: it is my best practice to specify version explicitly",
+            "description": "The nodeId where you want to get the cluster from",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "description": "The version of the cluster that you want to retrieve.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
         "tags": [
           "ClusterService"
         ]
-      }
-    },
-    "/v1/clusters/{nodeId}/version/{versionId}": {
+      },
       "delete": {
         "summary": "Delete cluster from node",
         "operationId": "Delete",
@@ -173,48 +178,9 @@
           },
           {
             "name": "versionId",
-            "description": "version of cluster to delete",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ClusterService"
-        ]
-      }
-    },
-    "/v1/clusters/{nodeId}/version/{version}": {
-      "get": {
-        "summary": "Read cluster from node",
-        "operationId": "Read",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ReadResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "nodeId",
-            "description": "The nodeId where you want to get the cluster from",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "version",
-            "description": "The version of the cluster that you want to retrieve",
-            "in": "path",
-            "required": true,
+            "description": "version of cluster to delete.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -242,10 +208,6 @@
             "$ref": "#/definitions/v1Hosts"
           },
           "title": "list of hosts"
-        },
-        "version": {
-          "type": "string",
-          "title": "unique cluster version"
         }
       },
       "title": "Cluster message\nlast id 4"
@@ -263,6 +225,10 @@
             "$ref": "#/definitions/v1Cluster"
           },
           "title": "List of clusters"
+        },
+        "version": {
+          "type": "string",
+          "title": "the version"
         }
       },
       "title": "Request data to create new Cluster"
@@ -274,11 +240,8 @@
           "type": "string",
           "title": "The node where the cluster has been created"
         },
-        "versions": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+        "version": {
+          "type": "string",
           "title": "versions of the created clusters"
         }
       },

@@ -49,8 +49,6 @@ message Cluster {
     // list of hosts
     repeated Hosts hosts = 3;
 
-    // unique cluster version
-    string version = 4;
 }
 
 // Request data to create new Cluster
@@ -60,6 +58,9 @@ message CreateRequest{
 
     // List of clusters
     repeated Cluster cluster = 2;
+
+    // the version
+    string version = 3;
 }
 
 // Contains data of created Cluster
@@ -69,7 +70,7 @@ message CreateResponse{
     string nodeId = 1;
 
     // versions of the created clusters
-    repeated string versions = 2;
+    string version = 2;
 }
 
 // Request data to update a cluster
@@ -158,7 +159,7 @@ service ClusterService {
     // Read cluster from node
     rpc Read(ReadRequest) returns (ReadResponse){
         option (google.api.http) = {
-            get: "/v1/clusters/{nodeId}/version/{version}"
+            get: "/v1/clusters/{nodeId}"
         };
     }
 
@@ -178,7 +179,7 @@ service ClusterService {
     // Delete cluster from node
     rpc Delete(DeleteRequest) returns (DeleteResponse){
         option (google.api.http) = {
-            delete: "/v1/clusters/{nodeId}/version/{versionId}"
+            delete: "/v1/clusters/{nodeId}"
         };
     }
 }
