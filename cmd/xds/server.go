@@ -13,7 +13,6 @@ import (
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/auth"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
 	"github.com/envoyproxy/go-control-plane/envoy/api/v2/listener"
-	"github.com/envoyproxy/go-control-plane/envoy/api/v2/route"
 	hcm "github.com/envoyproxy/go-control-plane/envoy/config/filter/network/http_connection_manager/v2"
 	accesslog "github.com/envoyproxy/go-control-plane/envoy/service/accesslog/v2"
 	discovery "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v2"
@@ -43,8 +42,6 @@ var (
 	grpcRestPort	uint
 
 	mode string
-
-	version int32
 
 	config cache.SnapshotCache
 )
@@ -138,7 +135,7 @@ func RunManagementGateway(ctx context.Context, srv xds.Server, port uint) {
 	}
 }
 
-func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.ClusterServiceServer) {
+func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1APICluster v1Handler.ClusterServiceServer, v1APIRoute v1Handler.RouteServiceServer) {
 	server := grpc.NewServer()
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d",grpcPort))
 	if err != nil {
@@ -147,7 +144,8 @@ func RunRestServicesGrpc(ctx context.Context, grpcPort uint, v1API v1Handler.Clu
 	}
 
 	// register service
-	v1Handler.RegisterClusterServiceServer(server, v1API)
+	v1Handler.RegisterClusterServiceServer(server, v1APICluster)
+	v1Handler.RegisterRouteServiceServer(server, v1APIRoute)
 	log.WithFields(log.Fields{"port": grpcPort}).Info("started grpc rest server")
 
 	// graceful shutdown
@@ -167,6 +165,11 @@ func RunRestServicesHttp(ctx context.Context, grpcPort uint, httpPort uint) {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	if err := v1Handler.RegisterClusterServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf("localhost:%d",grpcPort), opts); err != nil {
+		log.Fatalf("failed to start HTTP gateway: %v", err)
+		return
+	}
+
+	if err := v1Handler.RegisterRouteServiceHandlerFromEndpoint(ctx, mux, fmt.Sprintf("localhost:%d",grpcPort), opts); err != nil {
 		log.Fatalf("failed to start HTTP gateway: %v", err)
 		return
 	}
@@ -223,8 +226,9 @@ func InitXds(ctx context.Context) {
 	go RunManagementGateway(ctx, srv, gatewayPort)
 
 	//start rest server
-	v1API := v1.NewToDoServiceServer(config)
-	go RunRestServicesGrpc(ctx, grpcRestPort, v1API)
+	v1APICluster := v1.NewClusterServiceServer(config)
+	v1APIRoute := v1.NewRouteServiceServer(config)
+	go RunRestServicesGrpc(ctx, grpcRestPort, v1APICluster, v1APIRoute)
 	go RunRestServicesHttp(ctx, grpcRestPort, httpRestPort)
 
 	<-signal
@@ -238,7 +242,7 @@ func InitXds(ctx context.Context) {
 
 func _cacheInit() {
 	for {
-		atomic.AddInt32(&version, 1)
+		atomic.AddInt32(&v1.Version, 1)
 		nodeId := config.GetStatusKeys()[0]
 
 		var clusterName = "service_bbc"
@@ -274,43 +278,31 @@ func _cacheInit() {
 
 		// =================================================================================
 		var listenerName = "listener_0"
-		var targetHost = "www.bbc.com"
-		var targetRegex = "/api"
-		var virtualHostName = "local_service"
 		var routeConfigName = "local_route"
 
 		log.Infof(">>>>>>>>>>>>>>>>>>> creating listener " + listenerName)
 
-		v := route.VirtualHost{
-			Name:    virtualHostName,
-			Domains: []string{"*"},
-
-			Routes: []route.Route{{
-				Match: route.RouteMatch{
-					PathSpecifier: &route.RouteMatch_Prefix{
-						Prefix: targetRegex,
-					},
-				},
-				Action: &route.Route_Route{
-					Route: &route.RouteAction{
-						HostRewriteSpecifier: &route.RouteAction_HostRewrite{
-							HostRewrite: targetHost,
-						},
-						ClusterSpecifier: &route.RouteAction_Cluster{
-							Cluster: clusterName,
-						},
-						PrefixRewrite: "/robots.txt",
-					},
-				},
-			}}}
 
 		manager := &hcm.HttpConnectionManager{
 			CodecType:  hcm.AUTO,
 			StatPrefix: "ingress_http",
-			RouteSpecifier: &hcm.HttpConnectionManager_RouteConfig{
-				RouteConfig: &v2.RouteConfiguration{
-					Name:         routeConfigName,
-					VirtualHosts: []route.VirtualHost{v},
+			RouteSpecifier: &hcm.HttpConnectionManager_Rds{
+				Rds: &hcm.Rds{
+					RouteConfigName: routeConfigName,
+					ConfigSource: core.ConfigSource{
+						ConfigSourceSpecifier: &core.ConfigSource_ApiConfigSource{
+							ApiConfigSource: &core.ApiConfigSource{
+								ApiType: core.ApiConfigSource_GRPC,
+								GrpcServices: []*core.GrpcService{{
+									TargetSpecifier: &core.GrpcService_EnvoyGrpc_{
+										EnvoyGrpc: &core.GrpcService_EnvoyGrpc{
+											ClusterName: "xds_cluster",
+										},
+									},
+								}},
+							},
+						},
+					},
 				},
 			},
 			HttpFilters: []*hcm.HttpFilter{{
@@ -346,8 +338,8 @@ func _cacheInit() {
 
 		// =================================================================================
 
-		log.Infof(">>>>>>>>>>>>>>>>>>> creating snapshot Version " + fmt.Sprint(version))
-		snap := cache.NewSnapshot(fmt.Sprint(version), nil, c, nil, l)
+		log.Infof(">>>>>>>>>>>>>>>>>>> creating snapshot Version " + fmt.Sprint(v1.Version))
+		snap := cache.NewSnapshot(fmt.Sprint(v1.Version), nil, c, nil, l)
 
 
 		config.SetSnapshot(nodeId, snap)

@@ -136,7 +136,7 @@ func (m *Cluster) GetHosts() []*Hosts {
 }
 
 // Request data to create new Cluster
-type CreateRequest struct {
+type CreateRequestCluster struct {
 	// for which node to create the cluster
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// List of clusters
@@ -148,46 +148,46 @@ type CreateRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateRequest) Reset()         { *m = CreateRequest{} }
-func (m *CreateRequest) String() string { return proto.CompactTextString(m) }
-func (*CreateRequest) ProtoMessage()    {}
-func (*CreateRequest) Descriptor() ([]byte, []int) {
+func (m *CreateRequestCluster) Reset()         { *m = CreateRequestCluster{} }
+func (m *CreateRequestCluster) String() string { return proto.CompactTextString(m) }
+func (*CreateRequestCluster) ProtoMessage()    {}
+func (*CreateRequestCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{2}
 }
 
-func (m *CreateRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateRequest.Unmarshal(m, b)
+func (m *CreateRequestCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateRequestCluster.Unmarshal(m, b)
 }
-func (m *CreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateRequest.Marshal(b, m, deterministic)
+func (m *CreateRequestCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateRequestCluster.Marshal(b, m, deterministic)
 }
-func (m *CreateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateRequest.Merge(m, src)
+func (m *CreateRequestCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateRequestCluster.Merge(m, src)
 }
-func (m *CreateRequest) XXX_Size() int {
-	return xxx_messageInfo_CreateRequest.Size(m)
+func (m *CreateRequestCluster) XXX_Size() int {
+	return xxx_messageInfo_CreateRequestCluster.Size(m)
 }
-func (m *CreateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateRequest.DiscardUnknown(m)
+func (m *CreateRequestCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateRequestCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateRequest proto.InternalMessageInfo
+var xxx_messageInfo_CreateRequestCluster proto.InternalMessageInfo
 
-func (m *CreateRequest) GetNodeId() string {
+func (m *CreateRequestCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *CreateRequest) GetCluster() []*Cluster {
+func (m *CreateRequestCluster) GetCluster() []*Cluster {
 	if m != nil {
 		return m.Cluster
 	}
 	return nil
 }
 
-func (m *CreateRequest) GetVersion() string {
+func (m *CreateRequestCluster) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
@@ -196,7 +196,7 @@ func (m *CreateRequest) GetVersion() string {
 
 // Contains data of created Cluster
 // last id 2
-type CreateResponse struct {
+type CreateResponseCluster struct {
 	// The node where the cluster has been created
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// versions of the created clusters
@@ -206,39 +206,39 @@ type CreateResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateResponse) Reset()         { *m = CreateResponse{} }
-func (m *CreateResponse) String() string { return proto.CompactTextString(m) }
-func (*CreateResponse) ProtoMessage()    {}
-func (*CreateResponse) Descriptor() ([]byte, []int) {
+func (m *CreateResponseCluster) Reset()         { *m = CreateResponseCluster{} }
+func (m *CreateResponseCluster) String() string { return proto.CompactTextString(m) }
+func (*CreateResponseCluster) ProtoMessage()    {}
+func (*CreateResponseCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{3}
 }
 
-func (m *CreateResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CreateResponse.Unmarshal(m, b)
+func (m *CreateResponseCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateResponseCluster.Unmarshal(m, b)
 }
-func (m *CreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CreateResponse.Marshal(b, m, deterministic)
+func (m *CreateResponseCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateResponseCluster.Marshal(b, m, deterministic)
 }
-func (m *CreateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateResponse.Merge(m, src)
+func (m *CreateResponseCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateResponseCluster.Merge(m, src)
 }
-func (m *CreateResponse) XXX_Size() int {
-	return xxx_messageInfo_CreateResponse.Size(m)
+func (m *CreateResponseCluster) XXX_Size() int {
+	return xxx_messageInfo_CreateResponseCluster.Size(m)
 }
-func (m *CreateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateResponse.DiscardUnknown(m)
+func (m *CreateResponseCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateResponseCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateResponse proto.InternalMessageInfo
+var xxx_messageInfo_CreateResponseCluster proto.InternalMessageInfo
 
-func (m *CreateResponse) GetNodeId() string {
+func (m *CreateResponseCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *CreateResponse) GetVersion() string {
+func (m *CreateResponseCluster) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
@@ -246,7 +246,7 @@ func (m *CreateResponse) GetVersion() string {
 }
 
 // Request data to update a cluster
-type UpdateRequest struct {
+type UpdateRequestCluster struct {
 	// node for which we create a cluster
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// Cluster object to update
@@ -256,39 +256,39 @@ type UpdateRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdateRequest) Reset()         { *m = UpdateRequest{} }
-func (m *UpdateRequest) String() string { return proto.CompactTextString(m) }
-func (*UpdateRequest) ProtoMessage()    {}
-func (*UpdateRequest) Descriptor() ([]byte, []int) {
+func (m *UpdateRequestCluster) Reset()         { *m = UpdateRequestCluster{} }
+func (m *UpdateRequestCluster) String() string { return proto.CompactTextString(m) }
+func (*UpdateRequestCluster) ProtoMessage()    {}
+func (*UpdateRequestCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{4}
 }
 
-func (m *UpdateRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UpdateRequest.Unmarshal(m, b)
+func (m *UpdateRequestCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateRequestCluster.Unmarshal(m, b)
 }
-func (m *UpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UpdateRequest.Marshal(b, m, deterministic)
+func (m *UpdateRequestCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateRequestCluster.Marshal(b, m, deterministic)
 }
-func (m *UpdateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateRequest.Merge(m, src)
+func (m *UpdateRequestCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateRequestCluster.Merge(m, src)
 }
-func (m *UpdateRequest) XXX_Size() int {
-	return xxx_messageInfo_UpdateRequest.Size(m)
+func (m *UpdateRequestCluster) XXX_Size() int {
+	return xxx_messageInfo_UpdateRequestCluster.Size(m)
 }
-func (m *UpdateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateRequest.DiscardUnknown(m)
+func (m *UpdateRequestCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateRequestCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdateRequest proto.InternalMessageInfo
+var xxx_messageInfo_UpdateRequestCluster proto.InternalMessageInfo
 
-func (m *UpdateRequest) GetNodeId() string {
+func (m *UpdateRequestCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *UpdateRequest) GetCluster() *Cluster {
+func (m *UpdateRequestCluster) GetCluster() *Cluster {
 	if m != nil {
 		return m.Cluster
 	}
@@ -296,7 +296,7 @@ func (m *UpdateRequest) GetCluster() *Cluster {
 }
 
 // Contains status of update operation
-type UpdateResponse struct {
+type UpdateResponseCluster struct {
 	// API versioning: it is my best practice to specify version explicitly
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// Contains number of entities have beed updated
@@ -307,39 +307,39 @@ type UpdateResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdateResponse) Reset()         { *m = UpdateResponse{} }
-func (m *UpdateResponse) String() string { return proto.CompactTextString(m) }
-func (*UpdateResponse) ProtoMessage()    {}
-func (*UpdateResponse) Descriptor() ([]byte, []int) {
+func (m *UpdateResponseCluster) Reset()         { *m = UpdateResponseCluster{} }
+func (m *UpdateResponseCluster) String() string { return proto.CompactTextString(m) }
+func (*UpdateResponseCluster) ProtoMessage()    {}
+func (*UpdateResponseCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{5}
 }
 
-func (m *UpdateResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UpdateResponse.Unmarshal(m, b)
+func (m *UpdateResponseCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateResponseCluster.Unmarshal(m, b)
 }
-func (m *UpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UpdateResponse.Marshal(b, m, deterministic)
+func (m *UpdateResponseCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateResponseCluster.Marshal(b, m, deterministic)
 }
-func (m *UpdateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdateResponse.Merge(m, src)
+func (m *UpdateResponseCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateResponseCluster.Merge(m, src)
 }
-func (m *UpdateResponse) XXX_Size() int {
-	return xxx_messageInfo_UpdateResponse.Size(m)
+func (m *UpdateResponseCluster) XXX_Size() int {
+	return xxx_messageInfo_UpdateResponseCluster.Size(m)
 }
-func (m *UpdateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdateResponse.DiscardUnknown(m)
+func (m *UpdateResponseCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateResponseCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdateResponse proto.InternalMessageInfo
+var xxx_messageInfo_UpdateResponseCluster proto.InternalMessageInfo
 
-func (m *UpdateResponse) GetNodeId() string {
+func (m *UpdateResponseCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *UpdateResponse) GetVersion() string {
+func (m *UpdateResponseCluster) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
@@ -347,7 +347,7 @@ func (m *UpdateResponse) GetVersion() string {
 }
 
 // Request data to delete cluster from a node
-type DeleteRequest struct {
+type DeleteRequestCluster struct {
 	// node id
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// version of cluster to delete
@@ -357,39 +357,39 @@ type DeleteRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *DeleteRequest) Reset()         { *m = DeleteRequest{} }
-func (m *DeleteRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteRequest) ProtoMessage()    {}
-func (*DeleteRequest) Descriptor() ([]byte, []int) {
+func (m *DeleteRequestCluster) Reset()         { *m = DeleteRequestCluster{} }
+func (m *DeleteRequestCluster) String() string { return proto.CompactTextString(m) }
+func (*DeleteRequestCluster) ProtoMessage()    {}
+func (*DeleteRequestCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{6}
 }
 
-func (m *DeleteRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteRequest.Unmarshal(m, b)
+func (m *DeleteRequestCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteRequestCluster.Unmarshal(m, b)
 }
-func (m *DeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteRequest.Marshal(b, m, deterministic)
+func (m *DeleteRequestCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteRequestCluster.Marshal(b, m, deterministic)
 }
-func (m *DeleteRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteRequest.Merge(m, src)
+func (m *DeleteRequestCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRequestCluster.Merge(m, src)
 }
-func (m *DeleteRequest) XXX_Size() int {
-	return xxx_messageInfo_DeleteRequest.Size(m)
+func (m *DeleteRequestCluster) XXX_Size() int {
+	return xxx_messageInfo_DeleteRequestCluster.Size(m)
 }
-func (m *DeleteRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteRequest.DiscardUnknown(m)
+func (m *DeleteRequestCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRequestCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_DeleteRequest proto.InternalMessageInfo
+var xxx_messageInfo_DeleteRequestCluster proto.InternalMessageInfo
 
-func (m *DeleteRequest) GetNodeId() string {
+func (m *DeleteRequestCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *DeleteRequest) GetVersionId() string {
+func (m *DeleteRequestCluster) GetVersionId() string {
 	if m != nil {
 		return m.VersionId
 	}
@@ -397,7 +397,7 @@ func (m *DeleteRequest) GetVersionId() string {
 }
 
 // Contains status of delete operation
-type DeleteResponse struct {
+type DeleteResponseCluster struct {
 	// nodeId response
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// contains the versions of deleted clusters
@@ -407,39 +407,39 @@ type DeleteResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *DeleteResponse) Reset()         { *m = DeleteResponse{} }
-func (m *DeleteResponse) String() string { return proto.CompactTextString(m) }
-func (*DeleteResponse) ProtoMessage()    {}
-func (*DeleteResponse) Descriptor() ([]byte, []int) {
+func (m *DeleteResponseCluster) Reset()         { *m = DeleteResponseCluster{} }
+func (m *DeleteResponseCluster) String() string { return proto.CompactTextString(m) }
+func (*DeleteResponseCluster) ProtoMessage()    {}
+func (*DeleteResponseCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{7}
 }
 
-func (m *DeleteResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteResponse.Unmarshal(m, b)
+func (m *DeleteResponseCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteResponseCluster.Unmarshal(m, b)
 }
-func (m *DeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteResponse.Marshal(b, m, deterministic)
+func (m *DeleteResponseCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteResponseCluster.Marshal(b, m, deterministic)
 }
-func (m *DeleteResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteResponse.Merge(m, src)
+func (m *DeleteResponseCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteResponseCluster.Merge(m, src)
 }
-func (m *DeleteResponse) XXX_Size() int {
-	return xxx_messageInfo_DeleteResponse.Size(m)
+func (m *DeleteResponseCluster) XXX_Size() int {
+	return xxx_messageInfo_DeleteResponseCluster.Size(m)
 }
-func (m *DeleteResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteResponse.DiscardUnknown(m)
+func (m *DeleteResponseCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteResponseCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_DeleteResponse proto.InternalMessageInfo
+var xxx_messageInfo_DeleteResponseCluster proto.InternalMessageInfo
 
-func (m *DeleteResponse) GetNodeId() string {
+func (m *DeleteResponseCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *DeleteResponse) GetDeleted() []string {
+func (m *DeleteResponseCluster) GetDeleted() []string {
 	if m != nil {
 		return m.Deleted
 	}
@@ -447,7 +447,7 @@ func (m *DeleteResponse) GetDeleted() []string {
 }
 
 // Request data to read all clusters for a node
-type ReadAllRequestForNode struct {
+type ReadAllRequestForNodeCluster struct {
 	// API versioning: it is my best practice to specify version explicitly
 	NodeId               string   `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -455,32 +455,32 @@ type ReadAllRequestForNode struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ReadAllRequestForNode) Reset()         { *m = ReadAllRequestForNode{} }
-func (m *ReadAllRequestForNode) String() string { return proto.CompactTextString(m) }
-func (*ReadAllRequestForNode) ProtoMessage()    {}
-func (*ReadAllRequestForNode) Descriptor() ([]byte, []int) {
+func (m *ReadAllRequestForNodeCluster) Reset()         { *m = ReadAllRequestForNodeCluster{} }
+func (m *ReadAllRequestForNodeCluster) String() string { return proto.CompactTextString(m) }
+func (*ReadAllRequestForNodeCluster) ProtoMessage()    {}
+func (*ReadAllRequestForNodeCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{8}
 }
 
-func (m *ReadAllRequestForNode) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReadAllRequestForNode.Unmarshal(m, b)
+func (m *ReadAllRequestForNodeCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadAllRequestForNodeCluster.Unmarshal(m, b)
 }
-func (m *ReadAllRequestForNode) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReadAllRequestForNode.Marshal(b, m, deterministic)
+func (m *ReadAllRequestForNodeCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadAllRequestForNodeCluster.Marshal(b, m, deterministic)
 }
-func (m *ReadAllRequestForNode) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadAllRequestForNode.Merge(m, src)
+func (m *ReadAllRequestForNodeCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadAllRequestForNodeCluster.Merge(m, src)
 }
-func (m *ReadAllRequestForNode) XXX_Size() int {
-	return xxx_messageInfo_ReadAllRequestForNode.Size(m)
+func (m *ReadAllRequestForNodeCluster) XXX_Size() int {
+	return xxx_messageInfo_ReadAllRequestForNodeCluster.Size(m)
 }
-func (m *ReadAllRequestForNode) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReadAllRequestForNode.DiscardUnknown(m)
+func (m *ReadAllRequestForNodeCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadAllRequestForNodeCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ReadAllRequestForNode proto.InternalMessageInfo
+var xxx_messageInfo_ReadAllRequestForNodeCluster proto.InternalMessageInfo
 
-func (m *ReadAllRequestForNode) GetNodeId() string {
+func (m *ReadAllRequestForNodeCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
@@ -488,7 +488,7 @@ func (m *ReadAllRequestForNode) GetNodeId() string {
 }
 
 // Contains list of all clusters on a node
-type ReadAllResponseForNode struct {
+type ReadAllResponseForNodeCluster struct {
 	// API versioning: it is my best practice to specify version explicitly
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// List of all todo tasks
@@ -498,39 +498,39 @@ type ReadAllResponseForNode struct {
 	XXX_sizecache        int32      `json:"-"`
 }
 
-func (m *ReadAllResponseForNode) Reset()         { *m = ReadAllResponseForNode{} }
-func (m *ReadAllResponseForNode) String() string { return proto.CompactTextString(m) }
-func (*ReadAllResponseForNode) ProtoMessage()    {}
-func (*ReadAllResponseForNode) Descriptor() ([]byte, []int) {
+func (m *ReadAllResponseForNodeCluster) Reset()         { *m = ReadAllResponseForNodeCluster{} }
+func (m *ReadAllResponseForNodeCluster) String() string { return proto.CompactTextString(m) }
+func (*ReadAllResponseForNodeCluster) ProtoMessage()    {}
+func (*ReadAllResponseForNodeCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{9}
 }
 
-func (m *ReadAllResponseForNode) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReadAllResponseForNode.Unmarshal(m, b)
+func (m *ReadAllResponseForNodeCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadAllResponseForNodeCluster.Unmarshal(m, b)
 }
-func (m *ReadAllResponseForNode) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReadAllResponseForNode.Marshal(b, m, deterministic)
+func (m *ReadAllResponseForNodeCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadAllResponseForNodeCluster.Marshal(b, m, deterministic)
 }
-func (m *ReadAllResponseForNode) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadAllResponseForNode.Merge(m, src)
+func (m *ReadAllResponseForNodeCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadAllResponseForNodeCluster.Merge(m, src)
 }
-func (m *ReadAllResponseForNode) XXX_Size() int {
-	return xxx_messageInfo_ReadAllResponseForNode.Size(m)
+func (m *ReadAllResponseForNodeCluster) XXX_Size() int {
+	return xxx_messageInfo_ReadAllResponseForNodeCluster.Size(m)
 }
-func (m *ReadAllResponseForNode) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReadAllResponseForNode.DiscardUnknown(m)
+func (m *ReadAllResponseForNodeCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadAllResponseForNodeCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ReadAllResponseForNode proto.InternalMessageInfo
+var xxx_messageInfo_ReadAllResponseForNodeCluster proto.InternalMessageInfo
 
-func (m *ReadAllResponseForNode) GetNodeId() string {
+func (m *ReadAllResponseForNodeCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *ReadAllResponseForNode) GetClusters() []*Cluster {
+func (m *ReadAllResponseForNodeCluster) GetClusters() []*Cluster {
 	if m != nil {
 		return m.Clusters
 	}
@@ -538,7 +538,7 @@ func (m *ReadAllResponseForNode) GetClusters() []*Cluster {
 }
 
 // Request to get a specific cluster
-type ReadRequest struct {
+type ReadRequestCluster struct {
 	// The nodeId where you want to get the cluster from
 	NodeId string `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	// The version of the cluster that you want to retrieve
@@ -548,46 +548,46 @@ type ReadRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ReadRequest) Reset()         { *m = ReadRequest{} }
-func (m *ReadRequest) String() string { return proto.CompactTextString(m) }
-func (*ReadRequest) ProtoMessage()    {}
-func (*ReadRequest) Descriptor() ([]byte, []int) {
+func (m *ReadRequestCluster) Reset()         { *m = ReadRequestCluster{} }
+func (m *ReadRequestCluster) String() string { return proto.CompactTextString(m) }
+func (*ReadRequestCluster) ProtoMessage()    {}
+func (*ReadRequestCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{10}
 }
 
-func (m *ReadRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReadRequest.Unmarshal(m, b)
+func (m *ReadRequestCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadRequestCluster.Unmarshal(m, b)
 }
-func (m *ReadRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReadRequest.Marshal(b, m, deterministic)
+func (m *ReadRequestCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadRequestCluster.Marshal(b, m, deterministic)
 }
-func (m *ReadRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadRequest.Merge(m, src)
+func (m *ReadRequestCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadRequestCluster.Merge(m, src)
 }
-func (m *ReadRequest) XXX_Size() int {
-	return xxx_messageInfo_ReadRequest.Size(m)
+func (m *ReadRequestCluster) XXX_Size() int {
+	return xxx_messageInfo_ReadRequestCluster.Size(m)
 }
-func (m *ReadRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReadRequest.DiscardUnknown(m)
+func (m *ReadRequestCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadRequestCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ReadRequest proto.InternalMessageInfo
+var xxx_messageInfo_ReadRequestCluster proto.InternalMessageInfo
 
-func (m *ReadRequest) GetNodeId() string {
+func (m *ReadRequestCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *ReadRequest) GetVersion() string {
+func (m *ReadRequestCluster) GetVersion() string {
 	if m != nil {
 		return m.Version
 	}
 	return ""
 }
 
-type ReadResponse struct {
+type ReadResponseCluster struct {
 	NodeId               string   `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`
 	Cluster              *Cluster `protobuf:"bytes,2,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -595,39 +595,39 @@ type ReadResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ReadResponse) Reset()         { *m = ReadResponse{} }
-func (m *ReadResponse) String() string { return proto.CompactTextString(m) }
-func (*ReadResponse) ProtoMessage()    {}
-func (*ReadResponse) Descriptor() ([]byte, []int) {
+func (m *ReadResponseCluster) Reset()         { *m = ReadResponseCluster{} }
+func (m *ReadResponseCluster) String() string { return proto.CompactTextString(m) }
+func (*ReadResponseCluster) ProtoMessage()    {}
+func (*ReadResponseCluster) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e8681304beda874e, []int{11}
 }
 
-func (m *ReadResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ReadResponse.Unmarshal(m, b)
+func (m *ReadResponseCluster) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ReadResponseCluster.Unmarshal(m, b)
 }
-func (m *ReadResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ReadResponse.Marshal(b, m, deterministic)
+func (m *ReadResponseCluster) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ReadResponseCluster.Marshal(b, m, deterministic)
 }
-func (m *ReadResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadResponse.Merge(m, src)
+func (m *ReadResponseCluster) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadResponseCluster.Merge(m, src)
 }
-func (m *ReadResponse) XXX_Size() int {
-	return xxx_messageInfo_ReadResponse.Size(m)
+func (m *ReadResponseCluster) XXX_Size() int {
+	return xxx_messageInfo_ReadResponseCluster.Size(m)
 }
-func (m *ReadResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ReadResponse.DiscardUnknown(m)
+func (m *ReadResponseCluster) XXX_DiscardUnknown() {
+	xxx_messageInfo_ReadResponseCluster.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ReadResponse proto.InternalMessageInfo
+var xxx_messageInfo_ReadResponseCluster proto.InternalMessageInfo
 
-func (m *ReadResponse) GetNodeId() string {
+func (m *ReadResponseCluster) GetNodeId() string {
 	if m != nil {
 		return m.NodeId
 	}
 	return ""
 }
 
-func (m *ReadResponse) GetCluster() *Cluster {
+func (m *ReadResponseCluster) GetCluster() *Cluster {
 	if m != nil {
 		return m.Cluster
 	}
@@ -637,63 +637,61 @@ func (m *ReadResponse) GetCluster() *Cluster {
 func init() {
 	proto.RegisterType((*Hosts)(nil), "v1.Hosts")
 	proto.RegisterType((*Cluster)(nil), "v1.Cluster")
-	proto.RegisterType((*CreateRequest)(nil), "v1.CreateRequest")
-	proto.RegisterType((*CreateResponse)(nil), "v1.CreateResponse")
-	proto.RegisterType((*UpdateRequest)(nil), "v1.UpdateRequest")
-	proto.RegisterType((*UpdateResponse)(nil), "v1.UpdateResponse")
-	proto.RegisterType((*DeleteRequest)(nil), "v1.DeleteRequest")
-	proto.RegisterType((*DeleteResponse)(nil), "v1.DeleteResponse")
-	proto.RegisterType((*ReadAllRequestForNode)(nil), "v1.ReadAllRequestForNode")
-	proto.RegisterType((*ReadAllResponseForNode)(nil), "v1.ReadAllResponseForNode")
-	proto.RegisterType((*ReadRequest)(nil), "v1.ReadRequest")
-	proto.RegisterType((*ReadResponse)(nil), "v1.ReadResponse")
+	proto.RegisterType((*CreateRequestCluster)(nil), "v1.CreateRequestCluster")
+	proto.RegisterType((*CreateResponseCluster)(nil), "v1.CreateResponseCluster")
+	proto.RegisterType((*UpdateRequestCluster)(nil), "v1.UpdateRequestCluster")
+	proto.RegisterType((*UpdateResponseCluster)(nil), "v1.UpdateResponseCluster")
+	proto.RegisterType((*DeleteRequestCluster)(nil), "v1.DeleteRequestCluster")
+	proto.RegisterType((*DeleteResponseCluster)(nil), "v1.DeleteResponseCluster")
+	proto.RegisterType((*ReadAllRequestForNodeCluster)(nil), "v1.ReadAllRequestForNodeCluster")
+	proto.RegisterType((*ReadAllResponseForNodeCluster)(nil), "v1.ReadAllResponseForNodeCluster")
+	proto.RegisterType((*ReadRequestCluster)(nil), "v1.ReadRequestCluster")
+	proto.RegisterType((*ReadResponseCluster)(nil), "v1.ReadResponseCluster")
 }
 
 func init() { proto.RegisterFile("cluster-service.proto", fileDescriptor_e8681304beda874e) }
 
 var fileDescriptor_e8681304beda874e = []byte{
-	// 652 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x4f, 0x6f, 0xd3, 0x30,
-	0x14, 0xc0, 0x95, 0x74, 0x6b, 0xd7, 0xd7, 0x75, 0x7f, 0x2c, 0x6d, 0x2b, 0xd1, 0x10, 0x51, 0x00,
-	0x31, 0x15, 0xd6, 0xac, 0x65, 0xa7, 0xed, 0x00, 0xdb, 0x00, 0x6d, 0x12, 0x54, 0x28, 0x88, 0x03,
-	0x70, 0xca, 0x92, 0x47, 0x1b, 0x94, 0xd9, 0x21, 0x76, 0x3b, 0x10, 0xe2, 0xc2, 0x47, 0x80, 0x1b,
-	0x37, 0x0e, 0x7c, 0x10, 0x3e, 0x03, 0x5f, 0x81, 0x0f, 0x82, 0x62, 0x3b, 0x5d, 0x43, 0x57, 0x15,
-	0x38, 0xb5, 0x7e, 0xb6, 0x7f, 0xef, 0x97, 0x67, 0x3f, 0xc3, 0x5a, 0x10, 0x0f, 0xb8, 0xc0, 0x74,
-	0x9b, 0x63, 0x3a, 0x8c, 0x02, 0x6c, 0x25, 0x29, 0x13, 0x8c, 0x98, 0xc3, 0xb6, 0xb5, 0xd9, 0x63,
-	0xac, 0x17, 0xa3, 0xeb, 0x27, 0x91, 0xeb, 0x53, 0xca, 0x84, 0x2f, 0x22, 0x46, 0xb9, 0x5a, 0x61,
-	0xdd, 0x91, 0x3f, 0xc1, 0x76, 0x0f, 0xe9, 0x36, 0x3f, 0xf7, 0x7b, 0x3d, 0x4c, 0x5d, 0x96, 0xc8,
-	0x15, 0x93, 0xab, 0x9d, 0xdb, 0x30, 0x7f, 0xcc, 0xb8, 0xe0, 0x64, 0x09, 0xcc, 0x28, 0x69, 0x18,
-	0xb6, 0xb1, 0x55, 0xf5, 0xcc, 0x28, 0x21, 0x04, 0xe6, 0x12, 0x96, 0x8a, 0x86, 0x69, 0x1b, 0x5b,
-	0x75, 0x4f, 0xfe, 0x77, 0xfa, 0x50, 0x39, 0x52, 0x56, 0xc4, 0x86, 0x9a, 0x16, 0xec, 0xfa, 0x67,
-	0xa8, 0xf7, 0x8d, 0x87, 0x88, 0x05, 0x0b, 0x8f, 0x4f, 0x9f, 0xb2, 0x38, 0x0a, 0xde, 0x4b, 0x48,
-	0xd5, 0x1b, 0x8d, 0xc9, 0x35, 0x98, 0xef, 0x67, 0x59, 0x1b, 0x25, 0xbb, 0xb4, 0x55, 0xeb, 0x54,
-	0x5b, 0xc3, 0x76, 0x4b, 0x6a, 0x78, 0x2a, 0xee, 0xf4, 0xa1, 0x7e, 0x94, 0xa2, 0x2f, 0xd0, 0xc3,
-	0xb7, 0x03, 0xe4, 0x82, 0xac, 0x43, 0x99, 0xb2, 0x10, 0x4f, 0x42, 0x9d, 0x4a, 0x8f, 0xc8, 0x4d,
-	0xa8, 0xe8, 0xa4, 0x0d, 0x53, 0xb2, 0x6a, 0x19, 0x4b, 0x5b, 0x7a, 0xf9, 0x1c, 0x69, 0x40, 0x65,
-	0x88, 0x29, 0x8f, 0x18, 0x6d, 0x94, 0xe4, 0xfe, 0x7c, 0xe8, 0x1c, 0xc2, 0x52, 0x9e, 0x89, 0x27,
-	0x8c, 0x72, 0x9c, 0x9a, 0x6a, 0x8c, 0x61, 0x16, 0x19, 0x5d, 0xa8, 0x3f, 0x4f, 0xc2, 0x7f, 0xb5,
-	0x35, 0xa6, 0xd9, 0x66, 0x4e, 0x39, 0xef, 0xbf, 0x9d, 0x1e, 0x42, 0xfd, 0x01, 0xc6, 0x38, 0xdb,
-	0x69, 0x13, 0xaa, 0x7a, 0xcf, 0x49, 0xa8, 0x21, 0x17, 0x81, 0x4c, 0x25, 0xc7, 0xcc, 0x56, 0x09,
-	0xe5, 0xca, 0x50, 0x9e, 0x44, 0xd5, 0xcb, 0x87, 0x8e, 0x0b, 0x6b, 0x1e, 0xfa, 0xe1, 0x41, 0x1c,
-	0x6b, 0x97, 0x47, 0x2c, 0xed, 0xb2, 0x70, 0x2a, 0xca, 0x79, 0x01, 0xeb, 0xa3, 0x0d, 0x2a, 0xeb,
-	0x8c, 0x1d, 0xe4, 0x16, 0x2c, 0xe8, 0xe2, 0xf1, 0xcb, 0xee, 0xc1, 0x68, 0xd2, 0xb9, 0x07, 0xb5,
-	0x0c, 0x3d, 0xab, 0x28, 0xd3, 0xeb, 0xfa, 0x04, 0x16, 0x15, 0x60, 0x46, 0x39, 0xfe, 0xee, 0xa8,
-	0x3b, 0x3f, 0x4a, 0xb0, 0xa4, 0x83, 0xcf, 0x54, 0xa3, 0x13, 0x3a, 0xfa, 0x7a, 0x3d, 0xc1, 0xf3,
-	0xaf, 0xbf, 0x92, 0x21, 0x2e, 0x2d, 0xa5, 0x65, 0x15, 0xa6, 0x0a, 0x45, 0x73, 0xae, 0x7e, 0xfa,
-	0xf9, 0xeb, 0x8b, 0xb9, 0x41, 0xd6, 0xdc, 0x61, 0xdb, 0xcd, 0x2b, 0xe1, 0x7e, 0x50, 0xa2, 0x1f,
-	0xc9, 0x31, 0x94, 0x55, 0x07, 0x90, 0x55, 0xa9, 0x38, 0xde, 0x77, 0x16, 0x19, 0x0f, 0x29, 0xac,
-	0xb3, 0x21, 0x79, 0xab, 0xce, 0xe2, 0x38, 0x6f, 0xcf, 0x68, 0x92, 0x63, 0x98, 0xcb, 0x14, 0xc8,
-	0x72, 0x2e, 0x93, 0x53, 0x56, 0x2e, 0x02, 0x9a, 0x31, 0xc3, 0xe9, 0x15, 0x94, 0x55, 0x07, 0x28,
-	0xa7, 0x42, 0x77, 0x29, 0xa7, 0x62, 0x83, 0x38, 0x4d, 0xc9, 0xbb, 0x61, 0xfd, 0xe9, 0xf4, 0x72,
-	0xb5, 0x33, 0xa1, 0xd9, 0x85, 0xb2, 0xba, 0xd3, 0x0a, 0x5e, 0x68, 0x13, 0x05, 0x2f, 0x5e, 0xf9,
-	0x5c, 0xb6, 0x79, 0xb9, 0xec, 0xe1, 0x77, 0xe3, 0xf3, 0xc1, 0x37, 0x83, 0xec, 0xc3, 0xb2, 0x3e,
-	0x30, 0x5b, 0xbf, 0xd9, 0xce, 0xf5, 0x89, 0x90, 0xb5, 0x22, 0xd2, 0xe8, 0xb5, 0x4f, 0xef, 0xfb,
-	0x21, 0x3b, 0xc5, 0x56, 0xc0, 0xce, 0x3a, 0xa5, 0x76, 0x6b, 0xa7, 0x69, 0x18, 0x9d, 0x15, 0x3f,
-	0x49, 0xe2, 0x28, 0x90, 0xcf, 0xb3, 0xfb, 0x86, 0x33, 0xba, 0x37, 0x11, 0xf1, 0xf6, 0xa1, 0xb4,
-	0xbb, 0xb3, 0x4b, 0x76, 0xa1, 0xe9, 0xa1, 0x18, 0xa4, 0x14, 0x43, 0xfb, 0xbc, 0x8f, 0xd4, 0x16,
-	0x7d, 0xb4, 0x53, 0xe4, 0x6c, 0x90, 0x06, 0x68, 0x87, 0x0c, 0xb9, 0x4d, 0x99, 0xb0, 0xf1, 0x5d,
-	0xc4, 0x45, 0x8b, 0x94, 0x61, 0xee, 0xab, 0x69, 0x54, 0x4e, 0xcb, 0xf2, 0xc9, 0xbf, 0xfb, 0x3b,
-	0x00, 0x00, 0xff, 0xff, 0x4a, 0x0f, 0xdb, 0x7f, 0x5b, 0x06, 0x00, 0x00,
+	// 618 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0xdd, 0x4e, 0xd4, 0x4e,
+	0x14, 0x4f, 0xbb, 0xc0, 0xb2, 0x87, 0x3f, 0xfc, 0x71, 0xe4, 0xa3, 0x6e, 0x20, 0x8e, 0x35, 0x46,
+	0xb2, 0xca, 0x96, 0x5d, 0x89, 0x17, 0x70, 0x23, 0x62, 0x88, 0x24, 0x84, 0x98, 0x2a, 0x97, 0x26,
+	0x96, 0xf6, 0xb8, 0x5b, 0x53, 0x66, 0xea, 0xcc, 0xec, 0xa2, 0x51, 0x6f, 0x7c, 0x04, 0xbd, 0xf3,
+	0xce, 0x0b, 0x5f, 0x48, 0x5f, 0xc1, 0x07, 0x31, 0x9d, 0x4e, 0x71, 0x37, 0x14, 0x69, 0xf4, 0x6a,
+	0x77, 0xce, 0xcc, 0xef, 0x63, 0x7e, 0x3d, 0x73, 0x60, 0x31, 0x4c, 0x06, 0x52, 0xa1, 0x58, 0x97,
+	0x28, 0x86, 0x71, 0x88, 0xed, 0x54, 0x70, 0xc5, 0x89, 0x3d, 0xec, 0x34, 0x57, 0x7a, 0x9c, 0xf7,
+	0x12, 0xf4, 0x82, 0x34, 0xf6, 0x02, 0xc6, 0xb8, 0x0a, 0x54, 0xcc, 0x99, 0xcc, 0x4f, 0x34, 0xef,
+	0xea, 0x9f, 0x70, 0xbd, 0x87, 0x6c, 0x5d, 0x9e, 0x06, 0xbd, 0x1e, 0x0a, 0x8f, 0xa7, 0xfa, 0xc4,
+	0xf9, 0xd3, 0xee, 0x1d, 0x98, 0x7c, 0xcc, 0xa5, 0x92, 0x64, 0x0e, 0xec, 0x38, 0x75, 0x2c, 0x6a,
+	0xad, 0x35, 0x7c, 0x3b, 0x4e, 0x09, 0x81, 0x89, 0x94, 0x0b, 0xe5, 0xd8, 0xd4, 0x5a, 0x9b, 0xf5,
+	0xf5, 0x7f, 0xb7, 0x0f, 0xf5, 0xdd, 0xdc, 0x15, 0xa1, 0x30, 0x63, 0x0c, 0x1e, 0x06, 0x27, 0x68,
+	0x70, 0xa3, 0x25, 0xd2, 0x84, 0xe9, 0x83, 0xe3, 0x27, 0x3c, 0x89, 0xc3, 0xb7, 0x9a, 0xa4, 0xe1,
+	0x9f, 0xad, 0xc9, 0x75, 0x98, 0xec, 0x67, 0xaa, 0x4e, 0x8d, 0xd6, 0xd6, 0x66, 0xba, 0x8d, 0xf6,
+	0xb0, 0xd3, 0xd6, 0x36, 0xfc, 0xbc, 0xee, 0x72, 0x58, 0xd8, 0x15, 0x18, 0x28, 0xf4, 0xf1, 0xf5,
+	0x00, 0xa5, 0x2a, 0x64, 0x97, 0x60, 0x8a, 0xf1, 0x08, 0xf7, 0x23, 0xa3, 0x68, 0x56, 0xe4, 0x16,
+	0xd4, 0x8d, 0xb6, 0x63, 0x6b, 0xca, 0x99, 0x8c, 0xd2, 0xa0, 0xfc, 0x62, 0x8f, 0x38, 0x50, 0x1f,
+	0xa2, 0x90, 0x31, 0x67, 0x4e, 0x4d, 0xe3, 0x8b, 0xa5, 0xbb, 0x0f, 0x8b, 0x85, 0xa0, 0x4c, 0x39,
+	0x93, 0x78, 0x99, 0xe2, 0x08, 0x95, 0x3d, 0x4e, 0x75, 0x04, 0x0b, 0x47, 0x69, 0xf4, 0x97, 0xde,
+	0xad, 0x8b, 0xbc, 0x67, 0x0e, 0x0b, 0xda, 0x7f, 0x75, 0x78, 0x00, 0x0b, 0x8f, 0x30, 0xc1, 0xca,
+	0x0e, 0x57, 0xa0, 0x61, 0xa0, 0xfb, 0x91, 0xe1, 0xfa, 0x5d, 0xc8, 0x8c, 0x15, 0x6c, 0x95, 0x8d,
+	0x45, 0x1a, 0x10, 0xe9, 0x8f, 0xd5, 0xf0, 0x8b, 0xa5, 0x7b, 0x1f, 0x56, 0x7c, 0x0c, 0xa2, 0x9d,
+	0x24, 0x31, 0xce, 0xf6, 0xb8, 0x38, 0xe4, 0xd1, 0x65, 0x8c, 0xee, 0x0b, 0x58, 0x3d, 0xc3, 0xe5,
+	0x1e, 0xaa, 0x01, 0xc9, 0x6d, 0x98, 0x36, 0xf9, 0xca, 0xb2, 0xc6, 0x39, 0xdb, 0x74, 0xf7, 0x80,
+	0x64, 0x0a, 0x15, 0x03, 0xbb, 0x38, 0xfa, 0x67, 0x70, 0x35, 0xe7, 0xa9, 0x16, 0x55, 0xb5, 0xde,
+	0xe8, 0x7e, 0xb7, 0x61, 0xce, 0x14, 0x9f, 0xe6, 0xe3, 0x82, 0xbc, 0x87, 0x25, 0x13, 0x89, 0xd9,
+	0x90, 0x26, 0x12, 0x42, 0x33, 0x8a, 0x3f, 0xc5, 0xdc, 0xbc, 0x31, 0x76, 0xa2, 0x2c, 0x50, 0x77,
+	0xf5, 0xe3, 0x8f, 0x9f, 0x9f, 0xed, 0x65, 0xb2, 0xe8, 0x0d, 0x3b, 0x5e, 0x91, 0x92, 0xf7, 0x2e,
+	0xb7, 0xfd, 0x81, 0x3c, 0x87, 0xd9, 0xfc, 0x39, 0x15, 0x17, 0x74, 0xb4, 0xef, 0x92, 0x27, 0xdd,
+	0xbc, 0x36, 0xba, 0x33, 0x96, 0x8a, 0xbb, 0xac, 0x45, 0xae, 0xb8, 0xff, 0x8d, 0x8a, 0x6c, 0x59,
+	0x2d, 0x12, 0xc2, 0x6c, 0xde, 0x72, 0x63, 0xf4, 0x65, 0x3d, 0x9d, 0xd3, 0x97, 0xf6, 0x67, 0x71,
+	0x87, 0x56, 0xf9, 0x1d, 0x1e, 0x7e, 0xb3, 0x3e, 0xed, 0x7c, 0xb5, 0xc8, 0x36, 0xfc, 0x6f, 0x00,
+	0xd4, 0x8c, 0x62, 0xf7, 0xe6, 0xb9, 0x52, 0x73, 0x5e, 0x89, 0xf8, 0x65, 0xc0, 0x1e, 0x04, 0x11,
+	0x3f, 0xc6, 0x76, 0xc8, 0x4f, 0xba, 0xb5, 0x4e, 0x7b, 0xa3, 0x65, 0x59, 0xdd, 0xf9, 0x20, 0x4d,
+	0x93, 0x38, 0xd4, 0x53, 0xd7, 0x7b, 0x25, 0x39, 0xdb, 0x3a, 0x57, 0xf1, 0xb7, 0xa1, 0xb6, 0xb9,
+	0xb1, 0x49, 0x36, 0xa1, 0xe5, 0xa3, 0x1a, 0x08, 0x86, 0x11, 0x3d, 0xed, 0x23, 0xa3, 0xaa, 0x8f,
+	0x54, 0xa0, 0xe4, 0x03, 0x11, 0x22, 0x8d, 0x38, 0x4a, 0xca, 0xb8, 0xa2, 0xf8, 0x26, 0x96, 0xaa,
+	0x4d, 0xa6, 0x60, 0xe2, 0x8b, 0x6d, 0xd5, 0x8f, 0xa7, 0xf4, 0x24, 0xbf, 0xf7, 0x2b, 0x00, 0x00,
+	0xff, 0xff, 0xd4, 0xa3, 0x16, 0x9a, 0x32, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -709,15 +707,11 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ClusterServiceClient interface {
 	// Read all clusters for a node
-	ReadAllClustersForNode(ctx context.Context, in *ReadAllRequestForNode, opts ...grpc.CallOption) (*ReadAllResponseForNode, error)
+	ReadAllClustersForNode(ctx context.Context, in *ReadAllRequestForNodeCluster, opts ...grpc.CallOption) (*ReadAllResponseForNodeCluster, error)
 	// Create new clusters
-	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	// Read cluster from node
-	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
-	// Update cluster on node
-	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	CreateCluster(ctx context.Context, in *CreateRequestCluster, opts ...grpc.CallOption) (*CreateResponseCluster, error)
 	// Delete cluster from node
-	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	DeleteCluster(ctx context.Context, in *DeleteRequestCluster, opts ...grpc.CallOption) (*DeleteResponseCluster, error)
 }
 
 type clusterServiceClient struct {
@@ -728,8 +722,8 @@ func NewClusterServiceClient(cc *grpc.ClientConn) ClusterServiceClient {
 	return &clusterServiceClient{cc}
 }
 
-func (c *clusterServiceClient) ReadAllClustersForNode(ctx context.Context, in *ReadAllRequestForNode, opts ...grpc.CallOption) (*ReadAllResponseForNode, error) {
-	out := new(ReadAllResponseForNode)
+func (c *clusterServiceClient) ReadAllClustersForNode(ctx context.Context, in *ReadAllRequestForNodeCluster, opts ...grpc.CallOption) (*ReadAllResponseForNodeCluster, error) {
+	out := new(ReadAllResponseForNodeCluster)
 	err := c.cc.Invoke(ctx, "/v1.ClusterService/ReadAllClustersForNode", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -737,36 +731,18 @@ func (c *clusterServiceClient) ReadAllClustersForNode(ctx context.Context, in *R
 	return out, nil
 }
 
-func (c *clusterServiceClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
-	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/v1.ClusterService/Create", in, out, opts...)
+func (c *clusterServiceClient) CreateCluster(ctx context.Context, in *CreateRequestCluster, opts ...grpc.CallOption) (*CreateResponseCluster, error) {
+	out := new(CreateResponseCluster)
+	err := c.cc.Invoke(ctx, "/v1.ClusterService/CreateCluster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *clusterServiceClient) Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error) {
-	out := new(ReadResponse)
-	err := c.cc.Invoke(ctx, "/v1.ClusterService/Read", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *clusterServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
-	out := new(UpdateResponse)
-	err := c.cc.Invoke(ctx, "/v1.ClusterService/Update", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
-	out := new(DeleteResponse)
-	err := c.cc.Invoke(ctx, "/v1.ClusterService/Delete", in, out, opts...)
+func (c *clusterServiceClient) DeleteCluster(ctx context.Context, in *DeleteRequestCluster, opts ...grpc.CallOption) (*DeleteResponseCluster, error) {
+	out := new(DeleteResponseCluster)
+	err := c.cc.Invoke(ctx, "/v1.ClusterService/DeleteCluster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -776,35 +752,25 @@ func (c *clusterServiceClient) Delete(ctx context.Context, in *DeleteRequest, op
 // ClusterServiceServer is the server API for ClusterService service.
 type ClusterServiceServer interface {
 	// Read all clusters for a node
-	ReadAllClustersForNode(context.Context, *ReadAllRequestForNode) (*ReadAllResponseForNode, error)
+	ReadAllClustersForNode(context.Context, *ReadAllRequestForNodeCluster) (*ReadAllResponseForNodeCluster, error)
 	// Create new clusters
-	Create(context.Context, *CreateRequest) (*CreateResponse, error)
-	// Read cluster from node
-	Read(context.Context, *ReadRequest) (*ReadResponse, error)
-	// Update cluster on node
-	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	CreateCluster(context.Context, *CreateRequestCluster) (*CreateResponseCluster, error)
 	// Delete cluster from node
-	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	DeleteCluster(context.Context, *DeleteRequestCluster) (*DeleteResponseCluster, error)
 }
 
 // UnimplementedClusterServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedClusterServiceServer struct {
 }
 
-func (*UnimplementedClusterServiceServer) ReadAllClustersForNode(ctx context.Context, req *ReadAllRequestForNode) (*ReadAllResponseForNode, error) {
+func (*UnimplementedClusterServiceServer) ReadAllClustersForNode(ctx context.Context, req *ReadAllRequestForNodeCluster) (*ReadAllResponseForNodeCluster, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadAllClustersForNode not implemented")
 }
-func (*UnimplementedClusterServiceServer) Create(ctx context.Context, req *CreateRequest) (*CreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (*UnimplementedClusterServiceServer) CreateCluster(ctx context.Context, req *CreateRequestCluster) (*CreateResponseCluster, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCluster not implemented")
 }
-func (*UnimplementedClusterServiceServer) Read(ctx context.Context, req *ReadRequest) (*ReadResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Read not implemented")
-}
-func (*UnimplementedClusterServiceServer) Update(ctx context.Context, req *UpdateRequest) (*UpdateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
-}
-func (*UnimplementedClusterServiceServer) Delete(ctx context.Context, req *DeleteRequest) (*DeleteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (*UnimplementedClusterServiceServer) DeleteCluster(ctx context.Context, req *DeleteRequestCluster) (*DeleteResponseCluster, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCluster not implemented")
 }
 
 func RegisterClusterServiceServer(s *grpc.Server, srv ClusterServiceServer) {
@@ -812,7 +778,7 @@ func RegisterClusterServiceServer(s *grpc.Server, srv ClusterServiceServer) {
 }
 
 func _ClusterService_ReadAllClustersForNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadAllRequestForNode)
+	in := new(ReadAllRequestForNodeCluster)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -824,79 +790,43 @@ func _ClusterService_ReadAllClustersForNode_Handler(srv interface{}, ctx context
 		FullMethod: "/v1.ClusterService/ReadAllClustersForNode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClusterServiceServer).ReadAllClustersForNode(ctx, req.(*ReadAllRequestForNode))
+		return srv.(ClusterServiceServer).ReadAllClustersForNode(ctx, req.(*ReadAllRequestForNodeCluster))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ClusterService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateRequest)
+func _ClusterService_CreateCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequestCluster)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClusterServiceServer).Create(ctx, in)
+		return srv.(ClusterServiceServer).CreateCluster(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.ClusterService/Create",
+		FullMethod: "/v1.ClusterService/CreateCluster",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClusterServiceServer).Create(ctx, req.(*CreateRequest))
+		return srv.(ClusterServiceServer).CreateCluster(ctx, req.(*CreateRequestCluster))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ClusterService_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadRequest)
+func _ClusterService_DeleteCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequestCluster)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClusterServiceServer).Read(ctx, in)
+		return srv.(ClusterServiceServer).DeleteCluster(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.ClusterService/Read",
+		FullMethod: "/v1.ClusterService/DeleteCluster",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClusterServiceServer).Read(ctx, req.(*ReadRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ClusterService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ClusterServiceServer).Update(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/v1.ClusterService/Update",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClusterServiceServer).Update(ctx, req.(*UpdateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ClusterService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ClusterServiceServer).Delete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/v1.ClusterService/Delete",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClusterServiceServer).Delete(ctx, req.(*DeleteRequest))
+		return srv.(ClusterServiceServer).DeleteCluster(ctx, req.(*DeleteRequestCluster))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -910,20 +840,12 @@ var _ClusterService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _ClusterService_ReadAllClustersForNode_Handler,
 		},
 		{
-			MethodName: "Create",
-			Handler:    _ClusterService_Create_Handler,
+			MethodName: "CreateCluster",
+			Handler:    _ClusterService_CreateCluster_Handler,
 		},
 		{
-			MethodName: "Read",
-			Handler:    _ClusterService_Read_Handler,
-		},
-		{
-			MethodName: "Update",
-			Handler:    _ClusterService_Update_Handler,
-		},
-		{
-			MethodName: "Delete",
-			Handler:    _ClusterService_Delete_Handler,
+			MethodName: "DeleteCluster",
+			Handler:    _ClusterService_DeleteCluster_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

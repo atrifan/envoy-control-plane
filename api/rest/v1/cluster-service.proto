@@ -52,7 +52,7 @@ message Cluster {
 }
 
 // Request data to create new Cluster
-message CreateRequest{
+message CreateRequestCluster{
     // for which node to create the cluster
     string nodeId = 1;
 
@@ -65,7 +65,7 @@ message CreateRequest{
 
 // Contains data of created Cluster
 // last id 2
-message CreateResponse{
+message CreateResponseCluster{
     // The node where the cluster has been created
     string nodeId = 1;
 
@@ -74,7 +74,7 @@ message CreateResponse{
 }
 
 // Request data to update a cluster
-message UpdateRequest{
+message UpdateRequestCluster{
     // node for which we create a cluster
     string nodeId = 1;
 
@@ -83,7 +83,7 @@ message UpdateRequest{
 }
 
 // Contains status of update operation
-message UpdateResponse{
+message UpdateResponseCluster{
     // API versioning: it is my best practice to specify version explicitly
     string nodeId = 1;
 
@@ -93,7 +93,7 @@ message UpdateResponse{
 }
 
 // Request data to delete cluster from a node
-message DeleteRequest{
+message DeleteRequestCluster{
     // node id
     string nodeId = 1;
 
@@ -102,7 +102,7 @@ message DeleteRequest{
 }
 
 // Contains status of delete operation
-message DeleteResponse{
+message DeleteResponseCluster{
     // nodeId response
     string nodeId = 1;
 
@@ -111,13 +111,13 @@ message DeleteResponse{
 }
 
 // Request data to read all clusters for a node
-message ReadAllRequestForNode {
+message ReadAllRequestForNodeCluster {
     // API versioning: it is my best practice to specify version explicitly
     string nodeId = 1;
 }
 
 // Contains list of all clusters on a node
-message ReadAllResponseForNode {
+message ReadAllResponseForNodeCluster {
     // API versioning: it is my best practice to specify version explicitly
     string nodeId = 1;
 
@@ -126,7 +126,7 @@ message ReadAllResponseForNode {
 }
 
 // Request to get a specific cluster
-message ReadRequest {
+message ReadRequestCluster {
     // The nodeId where you want to get the cluster from
     string nodeId = 1;
 
@@ -134,7 +134,7 @@ message ReadRequest {
     string version = 2;
 }
 
-message ReadResponse {
+message ReadResponseCluster {
     string nodeId = 1;
     Cluster cluster = 2;
 }
@@ -142,42 +142,22 @@ message ReadResponse {
 // Service to manage list of Clusters
 service ClusterService {
     // Read all clusters for a node
-    rpc ReadAllClustersForNode(ReadAllRequestForNode) returns (ReadAllResponseForNode){
+    rpc ReadAllClustersForNode(ReadAllRequestForNodeCluster) returns (ReadAllResponseForNodeCluster){
         option (google.api.http) = {
             get: "/v1/clusters/{nodeId}"
         };
     }
 
     // Create new clusters
-    rpc Create(CreateRequest) returns (CreateResponse){
+    rpc CreateCluster(CreateRequestCluster) returns (CreateResponseCluster){
         option (google.api.http) = {
             post: "/v1/clusters"
             body: "*"
         };
     }
 
-    // Read cluster from node
-    rpc Read(ReadRequest) returns (ReadResponse){
-        option (google.api.http) = {
-            get: "/v1/clusters/{nodeId}"
-        };
-    }
-
-    // Update cluster on node
-    rpc Update(UpdateRequest) returns (UpdateResponse){
-        option (google.api.http) = {
-            put: "/v1/clusters"
-            body: "*"
-
-            additional_bindings {
-                patch: "/v1/clusters"
-                body: "*"
-            }
-        };
-    }
-
     // Delete cluster from node
-    rpc Delete(DeleteRequest) returns (DeleteResponse){
+    rpc DeleteCluster(DeleteRequestCluster) returns (DeleteResponseCluster){
         option (google.api.http) = {
             delete: "/v1/clusters/{nodeId}"
         };

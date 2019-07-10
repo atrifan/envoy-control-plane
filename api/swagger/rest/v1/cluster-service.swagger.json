@@ -21,12 +21,12 @@
     "/v1/clusters": {
       "post": {
         "summary": "Create new clusters",
-        "operationId": "Create",
+        "operationId": "CreateCluster",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateResponse"
+              "$ref": "#/definitions/v1CreateResponseCluster"
             }
           },
           "404": {
@@ -42,69 +42,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ClusterService"
-        ]
-      },
-      "put": {
-        "summary": "Update cluster on node",
-        "operationId": "Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UpdateResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ClusterService"
-        ]
-      },
-      "patch": {
-        "summary": "Update cluster on node",
-        "operationId": "Update2",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UpdateResponse"
-            }
-          },
-          "404": {
-            "description": "Returned when the resource does not exist.",
-            "schema": {
-              "format": "string"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateRequest"
+              "$ref": "#/definitions/v1CreateRequestCluster"
             }
           }
         ],
@@ -115,13 +53,13 @@
     },
     "/v1/clusters/{nodeId}": {
       "get": {
-        "summary": "Read cluster from node",
-        "operationId": "Read",
+        "summary": "Read all clusters for a node",
+        "operationId": "ReadAllClustersForNode",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ReadResponse"
+              "$ref": "#/definitions/v1ReadAllResponseForNodeCluster"
             }
           },
           "404": {
@@ -134,16 +72,9 @@
         "parameters": [
           {
             "name": "nodeId",
-            "description": "The nodeId where you want to get the cluster from",
+            "description": "API versioning: it is my best practice to specify version explicitly",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "version",
-            "description": "The version of the cluster that you want to retrieve.",
-            "in": "query",
-            "required": false,
             "type": "string"
           }
         ],
@@ -153,12 +84,12 @@
       },
       "delete": {
         "summary": "Delete cluster from node",
-        "operationId": "Delete",
+        "operationId": "DeleteCluster",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
+              "$ref": "#/definitions/v1DeleteResponseCluster"
             }
           },
           "404": {
@@ -212,7 +143,7 @@
       },
       "title": "Cluster message\nlast id 4"
     },
-    "v1CreateRequest": {
+    "v1CreateRequestCluster": {
       "type": "object",
       "properties": {
         "nodeId": {
@@ -233,7 +164,7 @@
       },
       "title": "Request data to create new Cluster"
     },
-    "v1CreateResponse": {
+    "v1CreateResponseCluster": {
       "type": "object",
       "properties": {
         "nodeId": {
@@ -247,7 +178,7 @@
       },
       "title": "Contains data of created Cluster\nlast id 2"
     },
-    "v1DeleteResponse": {
+    "v1DeleteResponseCluster": {
       "type": "object",
       "properties": {
         "nodeId": {
@@ -277,7 +208,7 @@
       },
       "title": "Hosts message\nlast id = 2"
     },
-    "v1ReadAllResponseForNode": {
+    "v1ReadAllResponseForNodeCluster": {
       "type": "object",
       "properties": {
         "nodeId": {
@@ -293,45 +224,6 @@
         }
       },
       "title": "Contains list of all clusters on a node"
-    },
-    "v1ReadResponse": {
-      "type": "object",
-      "properties": {
-        "nodeId": {
-          "type": "string"
-        },
-        "cluster": {
-          "$ref": "#/definitions/v1Cluster"
-        }
-      }
-    },
-    "v1UpdateRequest": {
-      "type": "object",
-      "properties": {
-        "nodeId": {
-          "type": "string",
-          "title": "node for which we create a cluster"
-        },
-        "cluster": {
-          "$ref": "#/definitions/v1Cluster",
-          "title": "Cluster object to update"
-        }
-      },
-      "title": "Request data to update a cluster"
-    },
-    "v1UpdateResponse": {
-      "type": "object",
-      "properties": {
-        "nodeId": {
-          "type": "string",
-          "title": "API versioning: it is my best practice to specify version explicitly"
-        },
-        "version": {
-          "type": "string",
-          "title": "Contains number of entities have beed updated\nEquals 1 in case of succesfull update"
-        }
-      },
-      "title": "Contains status of update operation"
     }
   }
 }

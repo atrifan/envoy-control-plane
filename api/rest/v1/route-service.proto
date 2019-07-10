@@ -1,0 +1,111 @@
+syntax = "proto3";
+package v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+		title: "Route service";
+        version: "1.0";
+        contact: {
+            name: "Route service";
+            url: "";
+            email: "trifan@adobe.com";
+            };
+        };
+        schemes: HTTP;
+        consumes: "application/json";
+        produces: "application/json";
+        responses: {
+        key: "404";
+        value: {
+        description: "Returned when the resource does not exist.";
+        schema: {
+        json_schema: {
+        type: STRING;
+        }
+        }
+        }
+        }
+        };
+
+//Hosts message
+//last id = 2
+
+message RouteData {
+    string cluster = 1;
+}
+
+message RouteInfo {
+   RouteData route = 1;
+   string type = 2;
+   string value = 3;
+}
+
+// Cluster message
+// last id 4
+message Route {
+    // Unique clusterName
+    string name = 1;
+
+    repeated string domains = 2;
+
+    repeated RouteInfo routeInfo = 3;
+}
+
+// Request data to create new Cluster
+message CreateRequestRoute{
+    // for which node to create the cluster
+    string nodeId = 1;
+
+    Route route = 2;
+}
+
+// Contains data of created Cluster
+// last id 2
+message CreateResponseRoute{
+    // The node where the cluster has been created
+    string nodeId = 1;
+
+    // versions of the created clusters
+    string version = 2;
+}
+
+
+// Contains list of all clusters on a node
+message ReadResponseForNodeRoute {
+    // API versioning: it is my best practice to specify version explicitly
+    string nodeId = 1;
+
+    // List of all todo tasks
+    string route = 2;
+}
+
+// Request to get a specific cluster
+message ReadRequestRoute {
+    // The nodeId where you want to get the cluster from
+    string nodeId = 1;
+
+    // The version of the cluster that you want to retrieve
+    string version = 2;
+}
+
+// Service to manage list of Clusters
+service RouteService {
+    // Read all clusters for a node
+    rpc ReadAllRoutesForNodeAndRoute(ReadResponseForNodeRoute) returns (Route){
+        option (google.api.http) = {
+            get: "/v1/nodes/{nodeId}/route/{route}"
+        };
+    }
+
+    // Create new clusters
+    rpc CreateRoute(CreateRequestRoute) returns (CreateResponseRoute){
+        option (google.api.http) = {
+            post: "/v1/routes"
+            body: "*"
+        };
+    }
+
+}

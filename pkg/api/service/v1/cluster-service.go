@@ -13,20 +13,20 @@ import (
 
 const (
 	// apiVersion is version of API is provided by server
-	apiVersion = "v1"
+	clusterServiceApiVersion = "v1"
 )
 
-var version int32
+var Version int32
 
 // toDoServiceServer is implementation of v1.ToDoServiceServer proto interface
 type clusterServiceServer struct {
 	cache cache.SnapshotCache
 }
 
-func (self *clusterServiceServer) ReadAllClustersForNode(ctx context.Context, req *v1.ReadAllRequestForNode) (*v1.ReadAllResponseForNode, error) {
-	snapshot, err := getFromCache(self.cache, req.NodeId)
+func (self *clusterServiceServer) ReadAllClustersForNode(ctx context.Context, req *v1.ReadAllRequestForNodeCluster) (*v1.ReadAllResponseForNodeCluster, error) {
+	snapshot, err := self.getFromCache(self.cache, req.NodeId)
 
-	response := &v1.ReadAllResponseForNode{
+	response := &v1.ReadAllResponseForNodeCluster{
 		NodeId: req.NodeId,
 	}
 
@@ -50,10 +50,10 @@ func (self *clusterServiceServer) ReadAllClustersForNode(ctx context.Context, re
 	return response, err
 }
 
-func (self *clusterServiceServer) Create(ctx context.Context, req *v1.CreateRequest) (*v1.CreateResponse, error) {
+func (self *clusterServiceServer) CreateCluster(ctx context.Context, req *v1.CreateRequestCluster) (*v1.CreateResponseCluster, error) {
 
 	var c []cache.Resource
-	atomic.AddInt32(&version, 1)
+	atomic.AddInt32(&Version, 1)
 
 	for _, cluster := range req.Cluster {
 		clusterEntry := &v2.Cluster{
@@ -78,37 +78,29 @@ func (self *clusterServiceServer) Create(ctx context.Context, req *v1.CreateRequ
 		c = append(c, clusterEntry)
 	}
 
-	snap := cache.NewSnapshot(fmt.Sprint(version), nil, c, nil, nil)
+	snap := cache.NewSnapshot(fmt.Sprint(Version), nil, c, nil, nil)
 	err := self.cache.SetSnapshot(req.NodeId, snap)
 
-	return &v1.CreateResponse{
+	return &v1.CreateResponseCluster{
 		Version: req.Version,
 		NodeId: req.NodeId,
 	}, err
 }
 
-func (self *clusterServiceServer) Read(context.Context, *v1.ReadRequest) (*v1.ReadResponse, error) {
-	panic("implement me")
-}
-
-func (self *clusterServiceServer) Update(context.Context, *v1.UpdateRequest) (*v1.UpdateResponse, error) {
-	panic("implement me")
-}
-
-func (self *clusterServiceServer) Delete(ctx context.Context, request *v1.DeleteRequest) (*v1.DeleteResponse, error) {
+func (self *clusterServiceServer) DeleteCluster(ctx context.Context, request *v1.DeleteRequestCluster) (*v1.DeleteResponseCluster, error) {
 	panic("implement me")
 
 }
 
 
-func getFromCache(cache cache.SnapshotCache, nodeID string) (cache.Snapshot, error){
+func (self *clusterServiceServer) getFromCache(cache cache.SnapshotCache, nodeID string) (cache.Snapshot, error){
 
 	snapshot, err := cache.GetSnapshot(nodeID)
 
 	return snapshot, err
 }
 // NewToDoServiceServer creates ToDo service
-func NewToDoServiceServer(cache cache.SnapshotCache) v1.ClusterServiceServer {
+func NewClusterServiceServer(cache cache.SnapshotCache) v1.ClusterServiceServer {
 	return &clusterServiceServer{
 		cache: cache,
 	}

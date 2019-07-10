@@ -1,0 +1,167 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Route service",
+    "version": "1.0",
+    "contact": {
+      "name": "Route service",
+      "email": "trifan@adobe.com"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/nodes/{nodeId}/route/{route}": {
+      "get": {
+        "summary": "Read all clusters for a node",
+        "operationId": "ReadAllRoutesForNodeAndRoute",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Route"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nodeId",
+            "description": "API versioning: it is my best practice to specify version explicitly",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "route",
+            "description": "List of all todo tasks",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RouteService"
+        ]
+      }
+    },
+    "/v1/routes": {
+      "post": {
+        "summary": "Create new clusters",
+        "operationId": "CreateRoute",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateResponseRoute"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateRequestRoute"
+            }
+          }
+        ],
+        "tags": [
+          "RouteService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "v1CreateRequestRoute": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "title": "for which node to create the cluster"
+        },
+        "route": {
+          "$ref": "#/definitions/v1Route"
+        }
+      },
+      "title": "Request data to create new Cluster"
+    },
+    "v1CreateResponseRoute": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "title": "The node where the cluster has been created"
+        },
+        "version": {
+          "type": "string",
+          "title": "versions of the created clusters"
+        }
+      },
+      "title": "Contains data of created Cluster\nlast id 2"
+    },
+    "v1Route": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Unique clusterName"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "routeInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1RouteInfo"
+          }
+        }
+      },
+      "title": "Cluster message\nlast id 4"
+    },
+    "v1RouteData": {
+      "type": "object",
+      "properties": {
+        "cluster": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RouteInfo": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "$ref": "#/definitions/v1RouteData"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
