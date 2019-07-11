@@ -24,7 +24,7 @@ type clusterServiceServer struct {
 }
 
 func (self *clusterServiceServer) ReadAllClustersForNode(ctx context.Context, req *v1.ReadAllRequestForNodeCluster) (*v1.ReadAllResponseForNodeCluster, error) {
-	snapshot, err := self.getFromCache(self.cache, req.NodeId)
+	snapshot, err := GetFromCache(self.cache, req.NodeId)
 
 	response := &v1.ReadAllResponseForNodeCluster{
 		NodeId: req.NodeId,
@@ -59,7 +59,7 @@ func (self *clusterServiceServer) CreateCluster(ctx context.Context, req *v1.Cre
 		clusterEntry := &v2.Cluster{
 			Name: cluster.ClusterName,
 			ConnectTimeout:  2 * time.Second,
-			ClusterDiscoveryType: &v2.Cluster_Type{v2.Cluster_STATIC},
+			ClusterDiscoveryType: &v2.Cluster_Type{Type: v2.Cluster_STATIC},
 			DnsLookupFamily: v2.Cluster_V4_ONLY,
 			LbPolicy:        v2.Cluster_ROUND_ROBIN,
 		}
@@ -78,11 +78,15 @@ func (self *clusterServiceServer) CreateCluster(ctx context.Context, req *v1.Cre
 		c = append(c, clusterEntry)
 	}
 
-	snap := cache.NewSnapshot(fmt.Sprint(Version), nil, c, nil, nil)
+	oldRoutes, _ := GetOldRoutes(self.cache, req.NodeId)
+	oldListeners, _ := GetOldListeners(self.cache, req.NodeId)
+
+
+	snap := cache.NewSnapshot(fmt.Sprint(Version), nil, c, oldRoutes, oldListeners)
 	err := self.cache.SetSnapshot(req.NodeId, snap)
 
 	return &v1.CreateResponseCluster{
-		Version: req.Version,
+		Version: fmt.Sprint(Version),
 		NodeId: req.NodeId,
 	}, err
 }
@@ -93,13 +97,6 @@ func (self *clusterServiceServer) DeleteCluster(ctx context.Context, request *v1
 }
 
 
-func (self *clusterServiceServer) getFromCache(cache cache.SnapshotCache, nodeID string) (cache.Snapshot, error){
-
-	snapshot, err := cache.GetSnapshot(nodeID)
-
-	return snapshot, err
-}
-// NewToDoServiceServer creates ToDo service
 func NewClusterServiceServer(cache cache.SnapshotCache) v1.ClusterServiceServer {
 	return &clusterServiceServer{
 		cache: cache,

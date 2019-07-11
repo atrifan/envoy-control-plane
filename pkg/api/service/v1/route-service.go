@@ -21,18 +21,18 @@ type routeServiceServer struct {
 }
 
 func (self *routeServiceServer) ReadAllRoutesForNodeAndRoute(ctx context.Context, req *v1.ReadResponseForNodeRoute) (*v1.Route, error) {
-	snapshot, err := self.getFromCache(self.cache, req.NodeId)
+	snapshot, err := GetFromCache(self.cache, req.NodeId)
 
 	response := &v1.Route{}
 
 	for _, value := range snapshot.Routes.Items {
 		switch value := value.(type) {
 		case *v2.RouteConfiguration:
-			route := &v1.Route{
+			routeInstance := &v1.Route{
 				Name: value.Name,
 				Domains: value.VirtualHosts[0].Domains,
 			}
-			return route, nil
+			return routeInstance, nil
 		}
 	}
 
@@ -41,7 +41,7 @@ func (self *routeServiceServer) ReadAllRoutesForNodeAndRoute(ctx context.Context
 
 func (self *routeServiceServer) CreateRoute(ctx context.Context, req *v1.CreateRequestRoute) (*v1.CreateResponseRoute, error) {
 
-	var c []cache.Resource
+	var r []cache.Resource
 	atomic.AddInt32(&Version, 1)
 
 	var routes []route.Route
@@ -53,6 +53,13 @@ func (self *routeServiceServer) CreateRoute(ctx context.Context, req *v1.CreateR
 					Match: route.RouteMatch {
 						PathSpecifier: &route.RouteMatch_Prefix{
 							Prefix: entry.Value,
+						},
+					},
+					Action: &route.Route_Route{
+						Route: &route.RouteAction{
+							ClusterSpecifier: &route.RouteAction_Cluster{
+								Cluster: entry.Route.Cluster,
+							},
 						},
 					},
 				})
@@ -80,15 +87,18 @@ func (self *routeServiceServer) CreateRoute(ctx context.Context, req *v1.CreateR
 	routeEntry := &v2.RouteConfiguration{
 		Name: req.Route.Name,
 		VirtualHosts: []route.VirtualHost{{
-			Name: "virtualHost",
+			Name: "local_service",
 			Domains: req.Route.Domains,
 			Routes: routes,
 		}},
 	}
 
-	c = append(c, routeEntry)
+	r = append(r, routeEntry)
 
-	snap := cache.NewSnapshot(fmt.Sprint(Version), nil, nil, c, nil)
+	oldClusters, _ := GetOldClusters(self.cache, req.NodeId)
+	oldListeners, _ := GetOldListeners(self.cache, req.NodeId)
+
+	snap := cache.NewSnapshot(fmt.Sprint(Version), nil, oldClusters, r, oldListeners)
 	err := self.cache.SetSnapshot(req.NodeId, snap)
 
 	return &v1.CreateResponseRoute{
@@ -97,13 +107,6 @@ func (self *routeServiceServer) CreateRoute(ctx context.Context, req *v1.CreateR
 	}, err
 }
 
-
-func (self *routeServiceServer) getFromCache(cache cache.SnapshotCache, nodeID string) (cache.Snapshot, error){
-
-	snapshot, err := cache.GetSnapshot(nodeID)
-
-	return snapshot, err
-}
 
 // NewToDoServiceServer creates ToDo service
 func NewRouteServiceServer(cache cache.SnapshotCache) v1.RouteServiceServer {

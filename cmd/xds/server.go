@@ -246,7 +246,6 @@ func _cacheInit() {
 		nodeId := config.GetStatusKeys()[0]
 
 		var clusterName = "service_bbc"
-		var remoteHost = "www.bbc.com"
 		var sni = "www.bbc.com"
 		log.Infof(">>>>>>>>>>>>>>>>>>> creating cluster " + clusterName)
 
@@ -254,7 +253,7 @@ func _cacheInit() {
 
 		h := &core.Address{Address: &core.Address_SocketAddress{
 			SocketAddress: &core.SocketAddress{
-				Address:  remoteHost,
+				Address:  "127.0.0.1",
 				Protocol: core.TCP,
 				PortSpecifier: &core.SocketAddress_PortValue{
 					PortValue: uint32(443),
